@@ -38,6 +38,26 @@ export const CONFIG = {
         frameInterval: 20,      // ms between frames (~50 FPS)
     },
 
+    // ── Sprite dimensions (measured from PNGs) ──────────────
+    sprites: {
+        bird: { width: 34, height: 26 },
+        pipe: { width: 52, height: 400 },
+        ground: { width: 552, height: 112 },
+        bg: { width: 276, height: 228 },
+    },
+
+    // ── RL Rewards ──────────────────────────────────────────
+    rewards: {
+        survive: 0.1,    // +0.1 per step alive
+        passPipe: 1.0,    // +1.0 when passing a pipe
+        collision: -1.0,   // -1.0 on crash (episode ends)
+    },
+
+    // ── Environment limits ──────────────────────────────────
+    env: {
+        maxStepsPerEpisode: 3000,  // ~60s at 50 FPS
+    },
+
     // ── Asset paths ─────────────────────────────────────────
     assets: {
         images: {
@@ -65,4 +85,10 @@ export const GameState = {
     getReady: 0,
     play: 1,
     gameOver: 2,
+};
+
+// ── RL Actions ────────────────────────────────────────────
+export const Action = {
+    NO_OP: 0,
+    FLAP: 1,
 };
