@@ -21,4 +21,33 @@ export class SeededRandom {
         t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     }
+
+    /**
+     * Returns a random integer in [min, max] (inclusive).
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
+    randInt(min, max) {
+        return Math.floor(this.next() * (max - min + 1)) + min;
+    }
+
+    /**
+     * Returns a random float in [min, max).
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
+    randRange(min, max) {
+        return this.next() * (max - min) + min;
+    }
+}
+
+/**
+ * Create a SeededRandom instance.
+ * @param {number} seed
+ * @returns {SeededRandom}
+ */
+export function createRNG(seed) {
+    return new SeededRandom(seed);
 }

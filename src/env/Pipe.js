@@ -1,4 +1,5 @@
 import { CONFIG, GameState } from '../config.js';
+import { SeededRandom } from '../utils/SeededRandom.js';
 
 export class Pipe {
     /**
@@ -20,6 +21,9 @@ export class Pipe {
         this.gap = CONFIG.pipe.gap;
         this.moved = true;
         this.pipes = [];
+
+        // Seeded PRNG for visual-mode pipe generation (no Math.random)
+        this._rng = new SeededRandom(Date.now() ^ 0);
     }
 
     /** Reset pipes for a new episode. */
@@ -48,7 +52,7 @@ export class Pipe {
                 x: parseFloat(this._canvas.width),
                 y: CONFIG.pipe.yOffsetBase *
                     Math.min(
-                        Math.random() + CONFIG.pipe.yOffsetMinFactor,
+                        this._rng.next() + CONFIG.pipe.yOffsetMinFactor,
                         CONFIG.pipe.yOffsetMaxFactor
                     ),
             });

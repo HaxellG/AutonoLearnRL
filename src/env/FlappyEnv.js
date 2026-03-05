@@ -21,6 +21,14 @@ import { SeededRandom } from '../utils/SeededRandom.js';
  *   +0.1  per step survived
  *   +1.0  when passing a pipe
  *   −1.0  on collision (episode terminates)
+ *
+ * Determinism:
+ *   The physics are frame-based (fixed-step, no deltaTime). Each call to
+ *   step() advances exactly one tick.  When a seed is provided to reset(),
+ *   all randomness (pipe heights) is driven by a Mulberry32 PRNG, guaranteeing
+ *   fully reproducible episodes.  When no seed is provided, one is
+ *   auto-generated from Date.now() and stored in info.seed so it can be
+ *   replayed later.
  */
 export class FlappyEnv {
     constructor() {
@@ -55,8 +63,9 @@ export class FlappyEnv {
         this._birdR = this._birdH / 4 + this._birdW / 4;
 
         // ── Mutable state (set in reset) ────────────────────
+        /** @type {SeededRandom} */
         this._rng = null;
-        this._deterministic = false;
+        this.seed = null;
         this.birdY = 0;
         this.birdVy = 0;
         this.pipes = [];
@@ -72,17 +81,17 @@ export class FlappyEnv {
 
     /**
      * Reset the environment to a fresh episode.
-     * @param {number} [seed] — if provided, pipe generation becomes deterministic.
+     *
+     * All randomness is driven by a seeded PRNG.  If no seed is provided,
+     * one is auto-generated from Date.now() and stored in `this.seed` (and
+     * returned in info) so the episode can be replayed.
+     *
+     * @param {number} [seed] — PRNG seed. Omit for auto-generated seed.
      * @returns {number[]} initial observation [dx, dy, vy]
      */
     reset(seed) {
-        if (seed !== undefined) {
-            this._rng = new SeededRandom(seed);
-            this._deterministic = true;
-        } else {
-            this._rng = null;
-            this._deterministic = false;
-        }
+        this.seed = seed !== undefined ? seed : (Date.now() ^ 0);
+        this._rng = new SeededRandom(this.seed);
 
         this.birdY = CONFIG.bird.startY;
         this.birdVy = 0;
@@ -189,6 +198,7 @@ export class FlappyEnv {
         // ── 6. Build result ─────────────────────────────────
         const state = this.getState();
         const info = {
+            seed: this.seed,
             score: this.score,
             timestep: this.frames,
             passedPipe,
@@ -229,6 +239,7 @@ export class FlappyEnv {
      */
     getSnapshot() {
         return {
+            seed: this.seed,
             birdY: this.birdY,
             birdVy: this.birdVy,
             pipes: this.pipes.map((p) => ({ ...p })),
@@ -236,6 +247,7 @@ export class FlappyEnv {
             frames: this.frames,
             done: this.done,
             pipeMoved: this._pipeMoved,
+            rngState: this._rng ? this._rng._state : null,
         };
     }
 
@@ -244,6 +256,7 @@ export class FlappyEnv {
      * @param {object} snap
      */
     setSnapshot(snap) {
+        this.seed = snap.seed;
         this.birdY = snap.birdY;
         this.birdVy = snap.birdVy;
         this.pipes = snap.pipes.map((p) => ({ ...p }));
@@ -251,14 +264,22 @@ export class FlappyEnv {
         this.frames = snap.frames;
         this.done = snap.done;
         this._pipeMoved = snap.pipeMoved;
+        if (snap.rngState !== null) {
+            this._rng = new SeededRandom(0);
+            this._rng._state = snap.rngState;
+        }
     }
 
     // ══════════════════════════════════════════════════════
     // PRIVATE
     // ══════════════════════════════════════════════════════
 
+    /**
+     * Spawn a new pipe using the seeded PRNG.
+     * No Math.random() — fully deterministic.
+     */
     _spawnPipe() {
-        const rand = this._deterministic ? this._rng.next() : Math.random();
+        const rand = this._rng.next();
         const factor = Math.min(rand + this._yMinF, this._yMaxF);
         this.pipes.push({
             x: this._canvasW,
