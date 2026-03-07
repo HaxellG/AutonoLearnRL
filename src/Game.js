@@ -15,6 +15,7 @@ const RAD = Math.PI / 180;
  * Uses FlappyEnv internally for physics during play state.
  * Renders using the existing sprite-based classes.
  * Human input is translated to env actions.
+ * Supports speed multiplier (stepsPerFrame) for fast-forward.
  */
 export class Game {
     /**
@@ -28,6 +29,9 @@ export class Game {
         // ── State ──────────────────────────────────────────
         this._state = GameState.getReady;
         this._frames = 0;
+
+        // ── Speed control ─────────────────────────────────
+        this._stepsPerFrame = 1;
 
         // ── Pending action for env ────────────────────────
         this._pendingAction = Action.NO_OP;
@@ -59,65 +63,103 @@ export class Game {
         // ── Input ──────────────────────────────────────────
         this._bindInput();
 
-        // ── Timer handle ───────────────────────────────────
-        this._intervalId = null;
+        // ── rAF handle ─────────────────────────────────────
+        this._rafId = null;
+        this._running = false;
     }
 
     // ────────────────────────────────────────────────────
     // Public API
     // ────────────────────────────────────────────────────
 
-    /** Start the game loop. */
+    /** Start the game loop (requestAnimationFrame). */
     start() {
-        this._intervalId = setInterval(() => this._loop(), CONFIG.game.frameInterval);
+        this._running = true;
+        this._lastTime = performance.now();
+        this._accumulator = 0;
+        this._scheduleFrame();
     }
 
     /** Stop the game loop. */
     stop() {
-        if (this._intervalId !== null) {
-            clearInterval(this._intervalId);
-            this._intervalId = null;
+        this._running = false;
+        if (this._rafId !== null) {
+            cancelAnimationFrame(this._rafId);
+            this._rafId = null;
         }
     }
 
+    /**
+     * Set the simulation speed multiplier.
+     * At speed N, each animation frame executes N env steps.
+     * @param {number} multiplier — 1, 4, 16, 64, etc.
+     */
+    setSpeed(multiplier) {
+        this._stepsPerFrame = Math.max(1, multiplier | 0);
+    }
+
+    /** @returns {number} current speed multiplier */
+    getSpeed() {
+        return this._stepsPerFrame;
+    }
+
     // ────────────────────────────────────────────────────
-    // Private
+    // Private — Loop
     // ────────────────────────────────────────────────────
 
-    _loop() {
-        this._update();
+    _scheduleFrame() {
+        if (!this._running) return;
+        this._rafId = requestAnimationFrame((now) => this._loop(now));
+    }
+
+    _loop(now) {
+        if (!this._running) return;
+
+        // Fixed timestep accumulator — run physics at CONFIG.game.frameInterval rate
+        const dt = now - this._lastTime;
+        this._lastTime = now;
+        this._accumulator += dt;
+
+        const interval = CONFIG.game.frameInterval;
+
+        while (this._accumulator >= interval) {
+            this._accumulator -= interval;
+            this._update();
+            this._frames++;
+        }
+
         this._draw();
-        this._frames++;
+        this._scheduleFrame();
     }
 
     _update() {
         const st = this._state;
 
         if (st === GameState.play) {
-            // ── Physics via FlappyEnv ──────────────────────
-            const { reward, done, info } = this._env.step(this._pendingAction);
-            this._pendingAction = Action.NO_OP;     // consume action
+            // Execute stepsPerFrame env steps per game tick
+            for (let i = 0; i < this._stepsPerFrame; i++) {
+                if (this._state !== GameState.play) break;
 
-            // ── Sync visual objects from env state ─────────
+                const { done, info } = this._env.step(this._pendingAction);
+                this._pendingAction = Action.NO_OP;   // consume on first step
+
+                // ── SFX triggers ──────────────────────────────
+                if (info.passedPipe) this._sfx.score.play();
+                if (info.collision) this._sfx.hit.play();
+
+                // ── Score ─────────────────────────────────────
+                this._ui.score.curr = this._env.score;
+
+                // ── Game over transition ──────────────────────
+                if (done && info.collision) {
+                    this._state = GameState.gameOver;
+                }
+            }
+
+            // Sync visuals from final env state
             this._syncFromEnv();
 
-            // ── SFX triggers ──────────────────────────────
-            if (info.passedPipe) {
-                this._sfx.score.play();
-            }
-            if (info.collision) {
-                this._sfx.hit.play();
-            }
-
-            // ── Score ──────────────────────────────────────
-            this._ui.score.curr = this._env.score;
-
-            // ── Game over transition ──────────────────────
-            if (done && info.collision) {
-                this._state = GameState.gameOver;
-            }
-
-            // ── Bird animation frame ──────────────────────
+            // Bird animation frame
             this._bird.frame += this._frames % CONFIG.bird.animRatePlay === 0 ? 1 : 0;
             this._bird.frame = this._bird.frame % this._bird.animations.length;
 
@@ -156,12 +198,9 @@ export class Game {
 
     /** Sync visual render objects from FlappyEnv's internal state. */
     _syncFromEnv() {
-        // Bird position & speed
         this._bird.y = this._env.birdY;
         this._bird.speed = this._env.birdVy;
         this._updateBirdRotation();
-
-        // Pipes — copy positions from env to visual Pipe manager
         this._pipe.pipes = this._env.pipes;
         this._pipe.moved = this._env._pipeMoved;
     }
@@ -192,7 +231,7 @@ export class Game {
         switch (this._state) {
             case GameState.getReady:
                 this._state = GameState.play;
-                this._env.reset();                // start a new episode
+                this._env.reset();
                 this._sfx.start.play();
                 break;
             case GameState.play:

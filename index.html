@@ -4,12 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FlappyBird</title>
-    <link rel="stylesheet" href="style.css" > 
+    <title>AutonoLearn RL — Flappy Bird</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Squada+One&display=swap" rel="stylesheet">
 </head>
 <body>
-    <canvas id="canvas" width="276" height="414"></canvas>
+    <div id="game-container">
+        <canvas id="canvas" width="276" height="414"></canvas>
+        <div id="speed-controls">
+            <span class="speed-label">Speed:</span>
+            <button class="speed-btn active" data-speed="1">1×</button>
+            <button class="speed-btn" data-speed="4">4×</button>
+            <button class="speed-btn" data-speed="16">16×</button>
+            <button class="speed-btn" data-speed="64">64×</button>
+        </div>
+    </div>
     <script type="module" src="src/main.js"></script>
 </body>
 </html>
