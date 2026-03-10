@@ -103,6 +103,19 @@ export class Game {
         return this._stepsPerFrame;
     }
 
+    /** 
+     * Force-render an external environment state (used by Agent runner).
+     * @param {import('./env/FlappyEnv.js').FlappyEnv} env 
+     */
+    renderEnv(env) {
+        // Hijack internal env state and force sync & draw
+        this._env = env;
+        this._state = GameState.play;  // Skip "Get Ready" screening
+        this._ui.score.curr = env.score; // Keep UI score synced
+        this._syncFromEnv();
+        this._draw();
+    }
+
     // ────────────────────────────────────────────────────
     // Private — Loop
     // ────────────────────────────────────────────────────

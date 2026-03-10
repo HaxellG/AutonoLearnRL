@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +8,60 @@
     <title>AutonoLearn RL — Flappy Bird</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Squada+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <div id="game-container">
-        <canvas id="canvas" width="276" height="414"></canvas>
-        <div id="speed-controls">
-            <span class="speed-label">Speed:</span>
-            <button class="speed-btn active" data-speed="1">1×</button>
-            <button class="speed-btn" data-speed="4">4×</button>
-            <button class="speed-btn" data-speed="16">16×</button>
-            <button class="speed-btn" data-speed="64">64×</button>
+    <div id="app-wrapper">
+        <!-- Izquierda: Juego -->
+        <div id="game-container">
+            <div id="mode-selector" style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
+                <label for="agent-select" style="color: white; font-family: 'Squada One', sans-serif;">Mode:</label>
+                <select id="agent-select" style="padding: 5px; border-radius: 5px; font-family: sans-serif;">
+                    <option value="human">Human (Manual)</option>
+                    <option value="qlearning">Q-Learning Agent</option>
+                </select>
+            </div>
+            <canvas id="canvas" width="276" height="414"></canvas>
+            <div id="speed-controls">
+                <span class="speed-label">Speed:</span>
+                <button class="speed-btn active" data-speed="1">1×</button>
+                <button class="speed-btn" data-speed="4">4×</button>
+                <button class="speed-btn" data-speed="16">16×</button>
+                <button class="speed-btn" data-speed="250">250×</button>
+                <button class="speed-btn" data-speed="1000">1000×</button>
+            </div>
+        </div>
+
+        <!-- Derecha: Dashboard -->
+        <div id="dashboard" class="hidden">
+            <div class="dash-cards">
+                <div class="card">
+                    <span class="card-title">Episode</span>
+                    <span id="lb-episode" class="card-value">0</span>
+                </div>
+                <div class="card">
+                    <span class="card-title">Current ε</span>
+                    <span id="lb-epsilon" class="card-value">1.000</span>
+                </div>
+                <div class="card">
+                    <span class="card-title">Max Score</span>
+                    <span id="lb-maxscore" class="card-value">0</span>
+                </div>
+                <div class="card">
+                    <span class="card-title">States</span>
+                    <span id="lb-states" class="card-value">0</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart-reward"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart-score"></canvas>
+            </div>
         </div>
     </div>
     <script type="module" src="src/main.js"></script>
 </body>
+
 </html>
