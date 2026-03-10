@@ -24,7 +24,7 @@ export const CONFIG = {
 
     // ── Pipes ───────────────────────────────────────────────
     pipe: {
-        gap: 85,                // vertical gap between top and bottom pipe
+        gap: 150,               // Increased drastically to allow random walk to pass
         spawnInterval: 100,     // spawn a new pipe every N frames
         // y offset range: y = -210 * clamp(random()+1, 1, 1.8)
         yOffsetBase: -210,
@@ -48,14 +48,39 @@ export const CONFIG = {
 
     // ── RL Rewards ──────────────────────────────────────────
     rewards: {
-        survive: 0.1,    // +0.1 per step alive
-        passPipe: 1.0,    // +1.0 when passing a pipe
-        collision: -1.0,   // -1.0 on crash (episode ends)
+        survive: 0.1,       // +0.1 per step alive
+        passPipe: 1.0,      // +1.0 when passing a pipe
+        collision: -1.0,    // -1.0 on crash (episode ends)
+        proximityScale: 0.5, // reward shaping: bonus for being near gap center
     },
 
     // ── Environment limits ──────────────────────────────────
     env: {
         maxStepsPerEpisode: 3000,  // ~60s at 50 FPS
+    },
+
+    // ── Q-Learning RL ─────────────────────────────────────
+    rl: {
+        qlearning: {
+            alpha: 0.1,             // learning rate
+            gamma: 0.95,            // discount factor
+            epsilonStart: 1.0,      // initial exploration rate
+            epsilonEnd: 0.01,       // minimum exploration rate
+            epsilonDecay: 0.9999,   // Slower decay for more episodes
+            qInit: 0,               // initial Q-value
+
+            bins: {
+                dx: { min: -50, max: 300, count: 15 },
+                dy: { min: -200, max: 200, count: 20 },
+                vy: { min: -8, max: 8, count: 15 },
+            },
+
+            training: {
+                episodes: 50000,
+                logEvery: 2500,
+                movingAvgWindow: 500,
+            },
+        },
     },
 
     // ── Asset paths ─────────────────────────────────────────

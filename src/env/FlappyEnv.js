@@ -56,6 +56,7 @@ export class FlappyEnv {
         this._rSurvive = CONFIG.rewards.survive;
         this._rPass = CONFIG.rewards.passPipe;
         this._rCollision = CONFIG.rewards.collision;
+        this._rProximityScale = CONFIG.rewards.proximityScale;
         this._maxSteps = CONFIG.env.maxStepsPerEpisode;
 
         // ── Collision helper (matches original Bird._checkCollision) ──
@@ -97,7 +98,7 @@ export class FlappyEnv {
         this.birdVy = 0;
         this.pipes = [];
         this.score = 0;
-        this.frames = 0;
+        this.frames = 1; // start at 1 so first pipe spawns at step 99, not step 0
         this.done = false;
         this._pipeMoved = true;
 
@@ -138,10 +139,20 @@ export class FlappyEnv {
             this._pipeMoved = true;
         }
 
-        // ── 4. Collision detection ──────────────────────────
+        // ── 4. Collision detection & reward ──────────────────
         let reward = this._rSurvive;
         let collision = false;
         let passedPipe = false;
+
+        // ── 4a. Proximity reward shaping ──────────────────────
+        //   Bonus proportional to how close bird is to gap center.
+        if (this.pipes.length && this._rProximityScale > 0) {
+            const gapCenterY = this.pipes[0].y + this._pipeH + this._pipeGap / 2;
+            const dist = Math.abs(this.birdY - gapCenterY);
+            const halfGap = this._pipeGap / 2;
+            const proximity = Math.max(0, 1 - dist / halfGap);
+            reward += this._rProximityScale * proximity;
+        }
 
         const r = this._birdR;
 
@@ -150,12 +161,8 @@ export class FlappyEnv {
             collision = true;
         }
 
-        // Ceiling collision (bird goes above canvas)
-        if (this.birdY - r <= 0) {
-            // Clamp bird at ceiling — same as original (bird.flap checks y > 0)
-            this.birdY = r;
-            this.birdVy = 0;
-        }
+        // In original game, there is no ceiling collision clamp. 
+        // The bird can fly above y=0 but can't flap, so gravity pulls it down.
 
         // Pipe collision (matches original Bird._checkCollision exactly)
         if (!collision && this.pipes.length) {
@@ -220,8 +227,9 @@ export class FlappyEnv {
      */
     getState() {
         if (!this.pipes.length) {
-            // No pipe visible yet → dx is distance to right edge, dy = 0
-            return [this._canvasW - CONFIG.bird.startX, 0, this.birdVy];
+            // No pipe visible → target vertical center of playable area
+            const midY = this._groundY / 2;
+            return [this._canvasW - CONFIG.bird.startX, midY - this.birdY, this.birdVy];
         }
 
         const p = this.pipes[0];
