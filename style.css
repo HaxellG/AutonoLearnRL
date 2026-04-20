@@ -16,7 +16,7 @@
 }
 
 /* ── Dashboard ──────────────────────────────────────── */
-#dashboard {
+#dashboard, #benchmark-dashboard {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -25,9 +25,10 @@
   padding: 15px;
   border-radius: 8px;
   border: 1px solid #3d3d5c;
+  color: white;
 }
 
-#dashboard.hidden {
+#dashboard.hidden, #benchmark-dashboard.hidden {
   display: none;
 }
 
@@ -73,6 +74,8 @@
   background-color: #30c0df;
   border: 2px solid black;
   display: block;
+  width: 414px;
+  height: 621px;
 }
 
 /* ── Speed controls ─────────────────────────────────── */

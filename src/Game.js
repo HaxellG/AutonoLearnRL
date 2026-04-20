@@ -164,8 +164,10 @@ export class Game {
                 this._ui.score.curr = this._env.score;
 
                 // ── Game over transition ──────────────────────
-                if (done && info.collision) {
+                if (done) {
                     this._state = GameState.gameOver;
+                    // Ensure the visual death happens even if it was a timeout
+                    if (!info.collision) info.collision = true;
                 }
             }
 

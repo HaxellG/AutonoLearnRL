@@ -2,8 +2,10 @@ import { Game } from './Game.js';
 import { SimulationRunner } from './SimulationRunner.js';
 import { FlappyEnv } from './env/FlappyEnv.js';
 import { QLearningAgent } from './agents/QLearningAgent.js';
+import { DQNAgent } from './agents/DQNAgent.js';
 import { Telemetry } from './utils/Telemetry.js';
 import { Dashboard } from './ui/Dashboard.js';
+import { Evaluator } from './utils/Evaluator.js';
 
 // ── UI Elements ──────────────────────────────────────────
 const canvas = document.getElementById('canvas');
@@ -26,8 +28,10 @@ modeSelect.addEventListener('change', (e) => {
     stopCurrentModes();
     if (e.target.value === 'human') {
         startHumanMode();
+    } else if (e.target.value === 'benchmark') {
+        startBenchmarkMode();
     } else {
-        startAIMode();
+        startAIMode(e.target.value);
     }
 });
 
@@ -58,6 +62,8 @@ function stopCurrentModes() {
     if (dashboard) {
         dashboard.hide();
     }
+    document.getElementById('benchmark-dashboard').classList.add('hidden');
+    document.getElementById('canvas').style.display = 'block';
 }
 
 function startHumanMode() {
@@ -70,11 +76,18 @@ function startHumanMode() {
     humanGame.start();
 }
 
-function startAIMode() {
+function startAIMode(agentType) {
     // 1. Initialize RL components
     env = new FlappyEnv();
-    agent = new QLearningAgent(); // Fresh agent to watch it learn
-    telemetry = new Telemetry(100);
+
+    if (agentType === 'dqn') {
+        agent = new DQNAgent();
+    } else {
+        agent = new QLearningAgent();
+    }
+
+    // Smooth moving average: Q-Learning is noisy (100 window), DQN is smoother (50 window)
+    telemetry = new Telemetry(agentType === 'dqn' ? 50 : 100);
     dashboard = new Dashboard(telemetry);
     dashboard.show();
 
@@ -100,7 +113,7 @@ function startAIMode() {
         onEpisodeEnd: (summary) => {
             agent.endEpisode();
             // Record metrics
-            telemetry.addEpisode(summary.totalReward, summary.score, agent.epsilon, agent.statesVisited);
+            telemetry.addEpisode(summary.totalReward, summary.score, agent.epsilon, agent.statesVisited || "N/A");
             // Update UI
             dashboard.update();
 
@@ -124,3 +137,78 @@ function startAIMode() {
     aiRunner._onReset = () => { env.seed = seedCount++; };
     aiRunner.startVisual(seedCount++);
 }
+
+async function startBenchmarkMode() {
+    // Hide game canvas since it will run headless in browser
+    document.getElementById('canvas').style.display = 'none';
+    const bDash = document.getElementById('benchmark-dashboard');
+    bDash.classList.remove('hidden');
+    
+    document.getElementById('bm-agent-name').innerText = 'Cargando modelos desde /models/...';
+    document.getElementById('bm-progress-bar').style.width = '0%';
+    document.getElementById('bm-table-body').innerHTML = '';
+    document.getElementById('bm-conclusion').innerText = '';
+
+    try {
+        const qAgent = new QLearningAgent();
+        const dqnAgent = new DQNAgent();
+
+        // 1. Load models explicitly
+        const qReq = await fetch('./models/qlearning.json');
+        if (!qReq.ok) throw new Error("Q-Learning no encontrado. Corre 'node src/examples/benchmark_agents.js' primero");
+        const qData = await qReq.json();
+        qAgent.load(qData);
+
+        await dqnAgent.load('./models/dqn/model.json'); // Fetches implicitly
+
+        const agents = [
+            { name: 'Q-Learning', agent: qAgent },
+            { name: 'DQN (TF.js)', agent: dqnAgent }
+        ];
+
+        // 2. Start Evaluator
+        const env = new FlappyEnv();
+        const evaluator = new Evaluator(env, agents);
+
+        const results = await evaluator.evaluateAllAsync({ episodes: 200, startSeed: 424242 }, (agentName, progress, stats) => {
+            document.getElementById('bm-agent-name').innerText = `Evaluando: ${agentName}`;
+            document.getElementById('bm-progress-bar').style.width = `${Math.floor(progress * 100)}%`;
+            document.getElementById('bm-stats').innerText = `Avg: ${stats.avgScore} | Max: ${stats.maxScore}`;
+        });
+
+        // 3. Render Results
+        document.getElementById('bm-agent-name').innerText = 'Benchmark Finalizado';
+        document.getElementById('bm-progress-bar').style.width = '100%';
+        document.getElementById('bm-stats').innerText = '';
+
+        const tBody = document.getElementById('bm-table-body');
+        tBody.innerHTML = '';
+        for (const [agentName, metrics] of Object.entries(results)) {
+            tBody.innerHTML += `
+                <tr style="border-bottom: 1px solid #3d3d5c;">
+                    <td style="padding: 5px;">${agentName}</td>
+                    <td style="padding: 5px;">${metrics.avgScore}</td>
+                    <td style="padding: 5px;">${metrics.maxScore}</td>
+                    <td style="padding: 5px;">${metrics.stdDev}</td>
+                </tr>
+            `;
+        }
+
+        const qAvg = results['Q-Learning'].avgScore;
+        const dAvg = results['DQN (TF.js)'].avgScore;
+
+        if (qAvg > dAvg) {
+            document.getElementById('bm-conclusion').innerText = `✅ Q-Learning rinde mejor por +${(qAvg - dAvg).toFixed(2)} Avg Score`;
+        } else if (dAvg > qAvg) {
+            document.getElementById('bm-conclusion').innerText = `✅ DQN rinde mejor por +${(dAvg - qAvg).toFixed(2)} Avg Score`;
+        } else {
+            document.getElementById('bm-conclusion').innerText = `🤝 Empate Estadístico`;
+        }
+
+    } catch(err) {
+        document.getElementById('bm-agent-name').innerText = 'Error al ejecutar benchmark';
+        document.getElementById('bm-stats').innerText = err.message;
+        console.error("Benchmark UI Error:", err);
+    }
+}
+

@@ -26,6 +26,21 @@ export class Dashboard {
     hide() {
         this.container.classList.add('hidden');
         this.isActive = false;
+        this.destroy(); // Safely clear charts to prevent UI memory leaks
+    }
+
+    /**
+     * Clear chart instances when switching agents to avoid canvas reuse errors
+     */
+    destroy() {
+        if (this.chartReward) {
+            this.chartReward.destroy();
+            this.chartReward = null;
+        }
+        if (this.chartScore) {
+            this.chartScore.destroy();
+            this.chartScore = null;
+        }
     }
 
     update() {

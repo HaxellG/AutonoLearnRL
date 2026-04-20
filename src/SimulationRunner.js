@@ -189,6 +189,8 @@ export class SimulationRunner {
                 this._state = result.state;
                 this._episodeReward += result.reward;
                 this._episodeSteps++;
+                
+                this._onStep?.(result);
             }
 
             const summary = this._buildSummary();

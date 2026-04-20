@@ -56,7 +56,7 @@ export const CONFIG = {
 
     // ── Environment limits ──────────────────────────────────
     env: {
-        maxStepsPerEpisode: 3000,  // ~60s at 50 FPS
+        maxStepsPerEpisode: 300000,  // Increased from 3000 to allow scores > 28
     },
 
     // ── Q-Learning RL ─────────────────────────────────────
