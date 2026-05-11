@@ -8,7 +8,7 @@ export class Dashboard {
         this.lbEpisode = document.getElementById('lb-episode');
         this.lbEpsilon = document.getElementById('lb-epsilon');
         this.lbMaxScore = document.getElementById('lb-maxscore');
-        this.lbStates = document.getElementById('lb-states');
+        this.lbAvgScore = document.getElementById('lb-avgscore');
 
         this.chartReward = null;
         this.chartScore = null;
@@ -50,7 +50,11 @@ export class Dashboard {
         this.lbEpisode.innerText = this.telemetry.episodes.toLocaleString();
         this.lbEpsilon.innerText = this.telemetry.currentEpsilon.toFixed(3);
         this.lbMaxScore.innerText = this.telemetry.maxScore.toString();
-        this.lbStates.innerText = this.telemetry.statesVisited.toString();
+
+        const avgScore = this.telemetry.avgScores.length > 0
+            ? this.telemetry.avgScores[this.telemetry.avgScores.length - 1].toFixed(2)
+            : "0";
+        this.lbAvgScore.innerText = avgScore;
 
         // 1. We don't want to draw 50,000 points. Subsample to max 500 points.
         const total = this.telemetry.episodes;
@@ -107,10 +111,53 @@ export class Dashboard {
             return;
         }
 
-        // Defaults for dark theme
-        Chart.defaults.color = '#9ca3af';
-        Chart.defaults.font.family = 'sans-serif';
+        // ── Arcade chart theme ───────────────────────────────
+        const pixelFont = "'Press Start 2P', monospace";
+        const golden    = '#e8c870';
+        const goldenDim = '#6b4820';
+        const gridColor = 'rgba(107, 72, 32, 0.35)';
 
+        // Shared axis config
+        const axisDefaults = (label) => ({
+            display: true,
+            title: {
+                display: true,
+                text: label,
+                color: golden,
+                font: { family: pixelFont, size: 7 },
+                padding: 4,
+            },
+            ticks: {
+                color: '#c8943c',
+                font: { family: pixelFont, size: 6 },
+                maxTicksLimit: 6,
+            },
+            grid: {
+                color: gridColor,
+                lineWidth: 1,
+            },
+            border: { color: goldenDim },
+        });
+
+        // Shared plugin config
+        const pluginDefaults = {
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    color: '#c8943c',
+                    font: { family: pixelFont, size: 7 },
+                    boxWidth: 12,
+                    boxHeight: 2,
+                    padding: 8,
+                },
+            },
+        };
+
+        Chart.defaults.color = '#c8943c';
+        Chart.defaults.font.family = pixelFont;
+
+        // ── Reward chart (sky blue) ──────────────────────────
         const ctxReward = document.getElementById('chart-reward').getContext('2d');
         this.chartReward = new Chart(ctxReward, {
             type: 'line',
@@ -120,14 +167,14 @@ export class Dashboard {
                     {
                         label: 'Reward',
                         data: [],
-                        borderColor: 'rgba(48, 192, 223, 0.2)', // light blue faded
+                        borderColor: 'rgba(121, 195, 244, 0.25)',
                         borderWidth: 1,
                         pointRadius: 0,
                     },
                     {
                         label: 'Moving Avg',
                         data: [],
-                        borderColor: '#30c0df', // solid blue
+                        borderColor: '#79c3f4',
                         borderWidth: 2,
                         pointRadius: 0,
                     }
@@ -138,15 +185,14 @@ export class Dashboard {
                 maintainAspectRatio: false,
                 animation: false,
                 scales: {
-                    x: { display: false },
-                    y: { beginAtZero: false } // rewards can be negative
+                    x: { ...axisDefaults('EPISODE') },
+                    y: { ...axisDefaults('REWARD'), beginAtZero: false },
                 },
-                plugins: {
-                    legend: { display: true, position: 'top' }
-                }
+                plugins: pluginDefaults,
             }
         });
 
+        // ── Score chart (pipe green) ─────────────────────────
         const ctxScore = document.getElementById('chart-score').getContext('2d');
         this.chartScore = new Chart(ctxScore, {
             type: 'line',
@@ -156,14 +202,14 @@ export class Dashboard {
                     {
                         label: 'Score',
                         data: [],
-                        borderColor: 'rgba(255, 99, 132, 0.2)', // red faded
+                        borderColor: 'rgba(115, 191, 46, 0.25)',
                         borderWidth: 1,
                         pointRadius: 0,
                     },
                     {
                         label: 'Moving Avg',
                         data: [],
-                        borderColor: '#ff6384', // solid red
+                        borderColor: '#73bf2e',
                         borderWidth: 2,
                         pointRadius: 0,
                     }
@@ -174,12 +220,10 @@ export class Dashboard {
                 maintainAspectRatio: false,
                 animation: false,
                 scales: {
-                    x: { display: false },
-                    y: { beginAtZero: true }
+                    x: { ...axisDefaults('EPISODE') },
+                    y: { ...axisDefaults('SCORE'), beginAtZero: true },
                 },
-                plugins: {
-                    legend: { display: true, position: 'top' }
-                }
+                plugins: pluginDefaults,
             }
         });
     }

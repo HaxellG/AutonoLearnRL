@@ -30,7 +30,7 @@ const env = new FlappyEnv();
 
 // ── Test 1: Episode runs and terminates ──────────────────
 console.log('=== Test 1: Episode terminates ===');
-const r1 = runEpisode(env, 42, () => 0);
+const r1 = runEpisode(env, 0, () => 0);
 console.log(`  NO_OP policy: steps=${r1.steps}, score=${r1.score}, reward=${r1.totalReward.toFixed(2)}`);
 console.assert(r1.steps > 0, 'Should take at least 1 step');
 console.assert(r1.steps < 200, 'NO_OP should die quickly');
@@ -38,7 +38,7 @@ console.log('  ✓ Passed\n');
 
 // ── Test 2: Always-flap policy ───────────────────────────
 console.log('=== Test 2: Always-flap policy ===');
-const r2 = runEpisode(env, 42, () => 1);
+const r2 = runEpisode(env, 0, () => 1);
 console.log(`  FLAP policy: steps=${r2.steps}, score=${r2.score}, reward=${r2.totalReward.toFixed(2)}`);
 console.assert(r2.steps > 0, 'Should take at least 1 step');
 console.log('  ✓ Passed\n');
@@ -96,7 +96,7 @@ console.log('  ✓ Passed\n');
 
 // ── Test 7: Reward structure ─────────────────────────────
 console.log('=== Test 7: Reward structure ===');
-env.reset(42);
+env.reset(0);
 const step7 = env.step(0);
 console.assert(step7.reward >= 0.1, 'Survive reward should be >= 0.1');
 console.assert(step7.done === false, 'Should not be done after 1 step');

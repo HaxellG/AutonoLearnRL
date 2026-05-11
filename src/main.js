@@ -3,14 +3,16 @@ import { SimulationRunner } from './SimulationRunner.js';
 import { FlappyEnv } from './env/FlappyEnv.js';
 import { QLearningAgent } from './agents/QLearningAgent.js';
 import { DQNAgent } from './agents/DQNAgent.js';
+import { DoubleDQNAgent } from './agents/DoubleDQNAgent.js';
 import { Telemetry } from './utils/Telemetry.js';
 import { Dashboard } from './ui/Dashboard.js';
 import { Evaluator } from './utils/Evaluator.js';
 
 // ── UI Elements ──────────────────────────────────────────
 const canvas = document.getElementById('canvas');
-const modeSelect = document.getElementById('agent-select');
+const modeBtns = document.querySelectorAll('#mode-selector .mode-btn');
 const speedBtns = document.querySelectorAll('.speed-btn');
+const speedControls = document.getElementById('speed-controls');
 
 // ── Global State ─────────────────────────────────────────
 let humanGame = null;
@@ -24,15 +26,25 @@ let dashboard = null;
 startHumanMode();
 
 // ── Mode Switcher ────────────────────────────────────────
-modeSelect.addEventListener('change', (e) => {
-    stopCurrentModes();
-    if (e.target.value === 'human') {
-        startHumanMode();
-    } else if (e.target.value === 'benchmark') {
-        startBenchmarkMode();
-    } else {
-        startAIMode(e.target.value);
-    }
+modeBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        const mode = btn.dataset.mode;
+
+        // Update active button highlight
+        modeBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        stopCurrentModes();
+        if (mode === 'human') {
+            startHumanMode();
+        } else if (mode === 'battle') {
+            // Future implementation
+            startBenchmarkMode();
+        } else {
+            startAIMode(mode);
+        }
+    });
 });
 
 // ── Speed Controls ───────────────────────────────────────
@@ -63,10 +75,11 @@ function stopCurrentModes() {
         dashboard.hide();
     }
     document.getElementById('benchmark-dashboard').classList.add('hidden');
-    document.getElementById('canvas').style.display = 'block';
+    document.getElementById('canvas-frame').style.display = 'inline-block';
 }
 
 function startHumanMode() {
+    if (speedControls) speedControls.style.display = 'none';
     humanGame = new Game(canvas);
 
     // Maintain speed selection
@@ -77,17 +90,20 @@ function startHumanMode() {
 }
 
 function startAIMode(agentType) {
+    if (speedControls) speedControls.style.display = 'flex';
     // 1. Initialize RL components
     env = new FlappyEnv();
 
     if (agentType === 'dqn') {
         agent = new DQNAgent();
+    } else if (agentType === 'ddqn') {
+        agent = new DoubleDQNAgent();
     } else {
         agent = new QLearningAgent();
     }
 
-    // Smooth moving average: Q-Learning is noisy (100 window), DQN is smoother (50 window)
-    telemetry = new Telemetry(agentType === 'dqn' ? 50 : 100);
+    // Smooth moving average: Q-Learning is noisy (100 window), neural nets are smoother (50 window)
+    telemetry = new Telemetry(agentType === 'qlearning' ? 100 : 50);
     dashboard = new Dashboard(telemetry);
     dashboard.show();
 
@@ -133,14 +149,14 @@ function startAIMode(agentType) {
     renderer.renderEnv(env);
 
     // Let's use incrementing seeds so it experiences different pipes
-    let seedCount = 42;
+    let seedCount = 0;
     aiRunner._onReset = () => { env.seed = seedCount++; };
     aiRunner.startVisual(seedCount++);
 }
 
 async function startBenchmarkMode() {
     // Hide game canvas since it will run headless in browser
-    document.getElementById('canvas').style.display = 'none';
+    document.getElementById('canvas-frame').style.display = 'none';
     const bDash = document.getElementById('benchmark-dashboard');
     bDash.classList.remove('hidden');
     
@@ -170,7 +186,7 @@ async function startBenchmarkMode() {
         const env = new FlappyEnv();
         const evaluator = new Evaluator(env, agents);
 
-        const results = await evaluator.evaluateAllAsync({ episodes: 200, startSeed: 424242 }, (agentName, progress, stats) => {
+        const results = await evaluator.evaluateAllAsync({ episodes: 200, startSeed: 0 }, (agentName, progress, stats) => {
             document.getElementById('bm-agent-name').innerText = `Evaluando: ${agentName}`;
             document.getElementById('bm-progress-bar').style.width = `${Math.floor(progress * 100)}%`;
             document.getElementById('bm-stats').innerText = `Avg: ${stats.avgScore} | Max: ${stats.maxScore}`;

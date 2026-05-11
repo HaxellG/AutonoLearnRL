@@ -28,7 +28,7 @@ export class DoubleDQNAgent {
 
         this.learningRate = 0.001;
         this.batchSize = 64;
-        this.targetUpdateFreq = 5000;
+        this.targetUpdateFreq = 5000; // v11 proven stable config
 
         this.actionSpace = 2;
         this.stateSize = 3;

@@ -1,0 +1,2858 @@
+{
+  "metadata": {
+    "timestamp": "2026-05-10T18-07-28-478Z",
+    "environment": "FlappyBird",
+    "maxStepsPerEpisode": 300000,
+    "evalSeed": 0,
+    "pipeGap": 100,
+    "rewards": {
+      "survive": 0.1,
+      "passPipe": 1,
+      "collision": -1,
+      "proximityScale": 0.5
+    }
+  },
+  "qlearning": {
+    "trainingEpisodes": 20000,
+    "trainingTimeSec": 3.1,
+    "hyperparameters": {
+      "alpha": 0.15,
+      "gamma": 0.95,
+      "epsilonStart": 1,
+      "epsilonEnd": 0.01,
+      "epsilonDecay": 0.9997122182804811,
+      "bins": {
+        "dx": {
+          "min": -50,
+          "max": 300,
+          "count": 15
+        },
+        "dy": {
+          "min": -200,
+          "max": 200,
+          "count": 20
+        },
+        "vy": {
+          "min": -8,
+          "max": 8,
+          "count": 15
+        }
+      },
+      "qTableSize": 574
+    },
+    "learningCurve": [
+      {
+        "episode": 200,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.9441,
+        "qTableSize": 374
+      },
+      {
+        "episode": 400,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.8913,
+        "qTableSize": 436
+      },
+      {
+        "episode": 600,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.8414,
+        "qTableSize": 479
+      },
+      {
+        "episode": 800,
+        "avgScore": 0.03,
+        "maxScore": 1,
+        "epsilon": 0.7943,
+        "qTableSize": 513
+      },
+      {
+        "episode": 1000,
+        "avgScore": 0.04,
+        "maxScore": 1,
+        "epsilon": 0.7499,
+        "qTableSize": 521
+      },
+      {
+        "episode": 1200,
+        "avgScore": 0.07,
+        "maxScore": 2,
+        "epsilon": 0.7079,
+        "qTableSize": 529
+      },
+      {
+        "episode": 1400,
+        "avgScore": 0.04,
+        "maxScore": 1,
+        "epsilon": 0.6683,
+        "qTableSize": 531
+      },
+      {
+        "episode": 1600,
+        "avgScore": 0.09,
+        "maxScore": 1,
+        "epsilon": 0.631,
+        "qTableSize": 534
+      },
+      {
+        "episode": 1800,
+        "avgScore": 0.1,
+        "maxScore": 2,
+        "epsilon": 0.5957,
+        "qTableSize": 537
+      },
+      {
+        "episode": 2000,
+        "avgScore": 0.06,
+        "maxScore": 1,
+        "epsilon": 0.5623,
+        "qTableSize": 543
+      },
+      {
+        "episode": 2200,
+        "avgScore": 0.07,
+        "maxScore": 2,
+        "epsilon": 0.5309,
+        "qTableSize": 545
+      },
+      {
+        "episode": 2400,
+        "avgScore": 0.1,
+        "maxScore": 2,
+        "epsilon": 0.5012,
+        "qTableSize": 548
+      },
+      {
+        "episode": 2600,
+        "avgScore": 0.13,
+        "maxScore": 2,
+        "epsilon": 0.4732,
+        "qTableSize": 554
+      },
+      {
+        "episode": 2800,
+        "avgScore": 0.2,
+        "maxScore": 3,
+        "epsilon": 0.4467,
+        "qTableSize": 554
+      },
+      {
+        "episode": 3000,
+        "avgScore": 0.15,
+        "maxScore": 2,
+        "epsilon": 0.4217,
+        "qTableSize": 558
+      },
+      {
+        "episode": 3200,
+        "avgScore": 0.21,
+        "maxScore": 2,
+        "epsilon": 0.3981,
+        "qTableSize": 558
+      },
+      {
+        "episode": 3400,
+        "avgScore": 0.21,
+        "maxScore": 3,
+        "epsilon": 0.3758,
+        "qTableSize": 558
+      },
+      {
+        "episode": 3600,
+        "avgScore": 0.33,
+        "maxScore": 6,
+        "epsilon": 0.3548,
+        "qTableSize": 558
+      },
+      {
+        "episode": 3800,
+        "avgScore": 0.29,
+        "maxScore": 4,
+        "epsilon": 0.335,
+        "qTableSize": 558
+      },
+      {
+        "episode": 4000,
+        "avgScore": 0.34,
+        "maxScore": 6,
+        "epsilon": 0.3162,
+        "qTableSize": 559
+      },
+      {
+        "episode": 4200,
+        "avgScore": 0.52,
+        "maxScore": 4,
+        "epsilon": 0.2985,
+        "qTableSize": 559
+      },
+      {
+        "episode": 4400,
+        "avgScore": 0.49,
+        "maxScore": 7,
+        "epsilon": 0.2818,
+        "qTableSize": 559
+      },
+      {
+        "episode": 4600,
+        "avgScore": 0.53,
+        "maxScore": 5,
+        "epsilon": 0.2661,
+        "qTableSize": 561
+      },
+      {
+        "episode": 4800,
+        "avgScore": 0.53,
+        "maxScore": 8,
+        "epsilon": 0.2512,
+        "qTableSize": 561
+      },
+      {
+        "episode": 5000,
+        "avgScore": 0.71,
+        "maxScore": 5,
+        "epsilon": 0.2371,
+        "qTableSize": 563
+      },
+      {
+        "episode": 5200,
+        "avgScore": 0.56,
+        "maxScore": 4,
+        "epsilon": 0.2239,
+        "qTableSize": 563
+      },
+      {
+        "episode": 5400,
+        "avgScore": 0.4,
+        "maxScore": 4,
+        "epsilon": 0.2113,
+        "qTableSize": 563
+      },
+      {
+        "episode": 5600,
+        "avgScore": 0.41,
+        "maxScore": 2,
+        "epsilon": 0.1995,
+        "qTableSize": 563
+      },
+      {
+        "episode": 5800,
+        "avgScore": 0.9,
+        "maxScore": 8,
+        "epsilon": 0.1884,
+        "qTableSize": 563
+      },
+      {
+        "episode": 6000,
+        "avgScore": 0.71,
+        "maxScore": 7,
+        "epsilon": 0.1778,
+        "qTableSize": 563
+      },
+      {
+        "episode": 6200,
+        "avgScore": 0.97,
+        "maxScore": 6,
+        "epsilon": 0.1679,
+        "qTableSize": 563
+      },
+      {
+        "episode": 6400,
+        "avgScore": 1.03,
+        "maxScore": 7,
+        "epsilon": 0.1585,
+        "qTableSize": 567
+      },
+      {
+        "episode": 6600,
+        "avgScore": 0.94,
+        "maxScore": 11,
+        "epsilon": 0.1496,
+        "qTableSize": 567
+      },
+      {
+        "episode": 6800,
+        "avgScore": 0.5,
+        "maxScore": 4,
+        "epsilon": 0.1413,
+        "qTableSize": 568
+      },
+      {
+        "episode": 7000,
+        "avgScore": 0.9,
+        "maxScore": 8,
+        "epsilon": 0.1334,
+        "qTableSize": 569
+      },
+      {
+        "episode": 7200,
+        "avgScore": 0.45,
+        "maxScore": 4,
+        "epsilon": 0.1259,
+        "qTableSize": 570
+      },
+      {
+        "episode": 7400,
+        "avgScore": 0.17,
+        "maxScore": 2,
+        "epsilon": 0.1189,
+        "qTableSize": 570
+      },
+      {
+        "episode": 7600,
+        "avgScore": 0.26,
+        "maxScore": 3,
+        "epsilon": 0.1122,
+        "qTableSize": 570
+      },
+      {
+        "episode": 7800,
+        "avgScore": 0.6,
+        "maxScore": 8,
+        "epsilon": 0.1059,
+        "qTableSize": 570
+      },
+      {
+        "episode": 8000,
+        "avgScore": 1.55,
+        "maxScore": 10,
+        "epsilon": 0.1,
+        "qTableSize": 570
+      },
+      {
+        "episode": 8200,
+        "avgScore": 1.25,
+        "maxScore": 8,
+        "epsilon": 0.0944,
+        "qTableSize": 570
+      },
+      {
+        "episode": 8400,
+        "avgScore": 1.63,
+        "maxScore": 10,
+        "epsilon": 0.0891,
+        "qTableSize": 571
+      },
+      {
+        "episode": 8600,
+        "avgScore": 2.38,
+        "maxScore": 20,
+        "epsilon": 0.0841,
+        "qTableSize": 572
+      },
+      {
+        "episode": 8800,
+        "avgScore": 1.87,
+        "maxScore": 15,
+        "epsilon": 0.0794,
+        "qTableSize": 572
+      },
+      {
+        "episode": 9000,
+        "avgScore": 1.93,
+        "maxScore": 12,
+        "epsilon": 0.075,
+        "qTableSize": 572
+      },
+      {
+        "episode": 9200,
+        "avgScore": 1.84,
+        "maxScore": 14,
+        "epsilon": 0.0708,
+        "qTableSize": 572
+      },
+      {
+        "episode": 9400,
+        "avgScore": 0.95,
+        "maxScore": 5,
+        "epsilon": 0.0668,
+        "qTableSize": 572
+      },
+      {
+        "episode": 9600,
+        "avgScore": 0.64,
+        "maxScore": 11,
+        "epsilon": 0.0631,
+        "qTableSize": 572
+      },
+      {
+        "episode": 9800,
+        "avgScore": 0.3,
+        "maxScore": 3,
+        "epsilon": 0.0596,
+        "qTableSize": 572
+      },
+      {
+        "episode": 10000,
+        "avgScore": 0.2,
+        "maxScore": 3,
+        "epsilon": 0.0562,
+        "qTableSize": 572
+      },
+      {
+        "episode": 10200,
+        "avgScore": 0.28,
+        "maxScore": 3,
+        "epsilon": 0.0531,
+        "qTableSize": 572
+      },
+      {
+        "episode": 10400,
+        "avgScore": 0.59,
+        "maxScore": 3,
+        "epsilon": 0.0501,
+        "qTableSize": 572
+      },
+      {
+        "episode": 10600,
+        "avgScore": 1.06,
+        "maxScore": 7,
+        "epsilon": 0.0473,
+        "qTableSize": 572
+      },
+      {
+        "episode": 10800,
+        "avgScore": 1.74,
+        "maxScore": 14,
+        "epsilon": 0.0447,
+        "qTableSize": 572
+      },
+      {
+        "episode": 11000,
+        "avgScore": 1.73,
+        "maxScore": 10,
+        "epsilon": 0.0422,
+        "qTableSize": 572
+      },
+      {
+        "episode": 11200,
+        "avgScore": 2.08,
+        "maxScore": 10,
+        "epsilon": 0.0398,
+        "qTableSize": 572
+      },
+      {
+        "episode": 11400,
+        "avgScore": 3.02,
+        "maxScore": 21,
+        "epsilon": 0.0376,
+        "qTableSize": 572
+      },
+      {
+        "episode": 11600,
+        "avgScore": 2.38,
+        "maxScore": 10,
+        "epsilon": 0.0355,
+        "qTableSize": 572
+      },
+      {
+        "episode": 11800,
+        "avgScore": 2.75,
+        "maxScore": 18,
+        "epsilon": 0.0335,
+        "qTableSize": 572
+      },
+      {
+        "episode": 12000,
+        "avgScore": 3.33,
+        "maxScore": 28,
+        "epsilon": 0.0316,
+        "qTableSize": 572
+      },
+      {
+        "episode": 12200,
+        "avgScore": 4.32,
+        "maxScore": 25,
+        "epsilon": 0.0299,
+        "qTableSize": 572
+      },
+      {
+        "episode": 12400,
+        "avgScore": 3.67,
+        "maxScore": 20,
+        "epsilon": 0.0282,
+        "qTableSize": 572
+      },
+      {
+        "episode": 12600,
+        "avgScore": 2.49,
+        "maxScore": 18,
+        "epsilon": 0.0266,
+        "qTableSize": 572
+      },
+      {
+        "episode": 12800,
+        "avgScore": 3.65,
+        "maxScore": 19,
+        "epsilon": 0.0251,
+        "qTableSize": 572
+      },
+      {
+        "episode": 13000,
+        "avgScore": 3.24,
+        "maxScore": 29,
+        "epsilon": 0.0237,
+        "qTableSize": 572
+      },
+      {
+        "episode": 13200,
+        "avgScore": 2.96,
+        "maxScore": 26,
+        "epsilon": 0.0224,
+        "qTableSize": 572
+      },
+      {
+        "episode": 13400,
+        "avgScore": 0.19,
+        "maxScore": 2,
+        "epsilon": 0.0211,
+        "qTableSize": 572
+      },
+      {
+        "episode": 13600,
+        "avgScore": 0.14,
+        "maxScore": 2,
+        "epsilon": 0.02,
+        "qTableSize": 572
+      },
+      {
+        "episode": 13800,
+        "avgScore": 0.28,
+        "maxScore": 2,
+        "epsilon": 0.0188,
+        "qTableSize": 572
+      },
+      {
+        "episode": 14000,
+        "avgScore": 0.38,
+        "maxScore": 2,
+        "epsilon": 0.0178,
+        "qTableSize": 572
+      },
+      {
+        "episode": 14200,
+        "avgScore": 0.65,
+        "maxScore": 3,
+        "epsilon": 0.0168,
+        "qTableSize": 572
+      },
+      {
+        "episode": 14400,
+        "avgScore": 0.44,
+        "maxScore": 2,
+        "epsilon": 0.0158,
+        "qTableSize": 572
+      },
+      {
+        "episode": 14600,
+        "avgScore": 0.07,
+        "maxScore": 2,
+        "epsilon": 0.015,
+        "qTableSize": 572
+      },
+      {
+        "episode": 14800,
+        "avgScore": 0.14,
+        "maxScore": 2,
+        "epsilon": 0.0141,
+        "qTableSize": 572
+      },
+      {
+        "episode": 15000,
+        "avgScore": 0.46,
+        "maxScore": 3,
+        "epsilon": 0.0133,
+        "qTableSize": 572
+      },
+      {
+        "episode": 15200,
+        "avgScore": 0.92,
+        "maxScore": 5,
+        "epsilon": 0.0126,
+        "qTableSize": 572
+      },
+      {
+        "episode": 15400,
+        "avgScore": 0.56,
+        "maxScore": 6,
+        "epsilon": 0.0119,
+        "qTableSize": 572
+      },
+      {
+        "episode": 15600,
+        "avgScore": 0.21,
+        "maxScore": 3,
+        "epsilon": 0.0112,
+        "qTableSize": 572
+      },
+      {
+        "episode": 15800,
+        "avgScore": 0.28,
+        "maxScore": 2,
+        "epsilon": 0.0106,
+        "qTableSize": 572
+      },
+      {
+        "episode": 16000,
+        "avgScore": 0.69,
+        "maxScore": 4,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 16200,
+        "avgScore": 0.29,
+        "maxScore": 4,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 16400,
+        "avgScore": 0.56,
+        "maxScore": 5,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 16600,
+        "avgScore": 0.34,
+        "maxScore": 3,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 16800,
+        "avgScore": 0.17,
+        "maxScore": 2,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 17000,
+        "avgScore": 1.11,
+        "maxScore": 7,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 17200,
+        "avgScore": 1.56,
+        "maxScore": 12,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 17400,
+        "avgScore": 2.25,
+        "maxScore": 18,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 17600,
+        "avgScore": 2.61,
+        "maxScore": 37,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 17800,
+        "avgScore": 11.21,
+        "maxScore": 59,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 18000,
+        "avgScore": 13.79,
+        "maxScore": 77,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 18200,
+        "avgScore": 13.17,
+        "maxScore": 90,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 18400,
+        "avgScore": 7.84,
+        "maxScore": 42,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 18600,
+        "avgScore": 16.89,
+        "maxScore": 95,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 18800,
+        "avgScore": 9.8,
+        "maxScore": 60,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 19000,
+        "avgScore": 9.45,
+        "maxScore": 76,
+        "epsilon": 0.01,
+        "qTableSize": 572
+      },
+      {
+        "episode": 19200,
+        "avgScore": 8.54,
+        "maxScore": 47,
+        "epsilon": 0.01,
+        "qTableSize": 573
+      },
+      {
+        "episode": 19400,
+        "avgScore": 6.75,
+        "maxScore": 49,
+        "epsilon": 0.01,
+        "qTableSize": 573
+      },
+      {
+        "episode": 19600,
+        "avgScore": 10.06,
+        "maxScore": 79,
+        "epsilon": 0.01,
+        "qTableSize": 573
+      },
+      {
+        "episode": 19800,
+        "avgScore": 11.64,
+        "maxScore": 108,
+        "epsilon": 0.01,
+        "qTableSize": 573
+      },
+      {
+        "episode": 20000,
+        "avgScore": 6.32,
+        "maxScore": 50,
+        "epsilon": 0.01,
+        "qTableSize": 573
+      }
+    ],
+    "checkpoints": [
+      {
+        "episode": 2000,
+        "mean": 0,
+        "max": 0,
+        "min": 0,
+        "stdDev": 0,
+        "median": 0
+      },
+      {
+        "episode": 4000,
+        "mean": 3.87,
+        "max": 23,
+        "min": 0,
+        "stdDev": 5.37,
+        "median": 2
+      },
+      {
+        "episode": 6000,
+        "mean": 5.26,
+        "max": 15,
+        "min": 1,
+        "stdDev": 3.54,
+        "median": 4
+      },
+      {
+        "episode": 8000,
+        "mean": 3.1,
+        "max": 13,
+        "min": 0,
+        "stdDev": 2.86,
+        "median": 2
+      },
+      {
+        "episode": 10000,
+        "mean": 1.2,
+        "max": 5,
+        "min": 0,
+        "stdDev": 1.03,
+        "median": 1
+      },
+      {
+        "episode": 12000,
+        "mean": 7.96,
+        "max": 38,
+        "min": 1,
+        "stdDev": 7.05,
+        "median": 6
+      },
+      {
+        "episode": 14000,
+        "mean": 0.74,
+        "max": 2,
+        "min": 0,
+        "stdDev": 0.54,
+        "median": 1
+      },
+      {
+        "episode": 16000,
+        "mean": 0.42,
+        "max": 3,
+        "min": 0,
+        "stdDev": 0.76,
+        "median": 0
+      },
+      {
+        "episode": 18000,
+        "mean": 65.44,
+        "max": 278,
+        "min": 1,
+        "stdDev": 58.42,
+        "median": 44.5
+      },
+      {
+        "episode": 20000,
+        "mean": 26.03,
+        "max": 141,
+        "min": 2,
+        "stdDev": 26.15,
+        "median": 16.5
+      }
+    ],
+    "finalEval": {
+      "mean": 24.89,
+      "max": 141,
+      "min": 2,
+      "stdDev": 24.43,
+      "median": 16.5,
+      "episodes": 200,
+      "rawScores": [
+        14,
+        36,
+        20,
+        4,
+        33,
+        2,
+        30,
+        21,
+        7,
+        9,
+        28,
+        6,
+        58,
+        106,
+        5,
+        68,
+        30,
+        24,
+        38,
+        15,
+        27,
+        12,
+        9,
+        44,
+        13,
+        61,
+        4,
+        24,
+        52,
+        21,
+        23,
+        10,
+        6,
+        4,
+        2,
+        13,
+        2,
+        34,
+        2,
+        27,
+        2,
+        80,
+        59,
+        17,
+        10,
+        47,
+        4,
+        8,
+        2,
+        6,
+        43,
+        52,
+        6,
+        65,
+        33,
+        66,
+        85,
+        58,
+        3,
+        41,
+        10,
+        23,
+        5,
+        46,
+        15,
+        23,
+        6,
+        9,
+        18,
+        14,
+        6,
+        5,
+        38,
+        26,
+        16,
+        8,
+        3,
+        8,
+        105,
+        23,
+        12,
+        37,
+        42,
+        141,
+        15,
+        3,
+        10,
+        35,
+        13,
+        81,
+        7,
+        21,
+        5,
+        58,
+        2,
+        2,
+        42,
+        13,
+        22,
+        4,
+        15,
+        13,
+        46,
+        32,
+        27,
+        43,
+        8,
+        10,
+        2,
+        15,
+        26,
+        2,
+        7,
+        18,
+        14,
+        77,
+        19,
+        23,
+        3,
+        2,
+        23,
+        33,
+        53,
+        5,
+        18,
+        59,
+        4,
+        28,
+        13,
+        18,
+        55,
+        35,
+        8,
+        9,
+        31,
+        4,
+        9,
+        12,
+        80,
+        7,
+        12,
+        32,
+        21,
+        31,
+        55,
+        9,
+        15,
+        66,
+        3,
+        34,
+        27,
+        44,
+        10,
+        55,
+        19,
+        91,
+        34,
+        9,
+        5,
+        26,
+        20,
+        9,
+        2,
+        5,
+        83,
+        2,
+        14,
+        2,
+        31,
+        35,
+        2,
+        2,
+        24,
+        7,
+        11,
+        22,
+        51,
+        27,
+        15,
+        10,
+        31,
+        4,
+        5,
+        6,
+        92,
+        55,
+        23,
+        4,
+        6,
+        14,
+        14,
+        106,
+        35,
+        18,
+        24,
+        2,
+        5,
+        36,
+        2,
+        14
+      ]
+    }
+  },
+  "dqn": {
+    "trainingEpisodes": 20000,
+    "trainingTimeSec": 3329.71,
+    "hyperparameters": {
+      "gamma": 0.99,
+      "learningRate": 0.001,
+      "epsilonStart": 1,
+      "epsilonEnd": 0.01,
+      "epsilonDecay": 0.9994245193792801,
+      "batchSize": 64,
+      "replayBufferSize": 10000,
+      "targetUpdateFreq": 5000,
+      "networkArchitecture": "3 → 24(ReLU) → 24(ReLU) → 2(Linear)",
+      "algorithm": "Vanilla DQN: target = r + γ·max Q_target(s',a')"
+    },
+    "learningCurve": [
+      {
+        "episode": 200,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.8913
+      },
+      {
+        "episode": 400,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.7943
+      },
+      {
+        "episode": 600,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.7079
+      },
+      {
+        "episode": 800,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.631
+      },
+      {
+        "episode": 1000,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.5623
+      },
+      {
+        "episode": 1200,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.5012
+      },
+      {
+        "episode": 1400,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.4467
+      },
+      {
+        "episode": 1600,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.3981
+      },
+      {
+        "episode": 1800,
+        "avgScore": 0.04,
+        "maxScore": 2,
+        "epsilon": 0.3548
+      },
+      {
+        "episode": 2000,
+        "avgScore": 0.06,
+        "maxScore": 1,
+        "epsilon": 0.3162
+      },
+      {
+        "episode": 2200,
+        "avgScore": 0.07,
+        "maxScore": 1,
+        "epsilon": 0.2818
+      },
+      {
+        "episode": 2400,
+        "avgScore": 0.13,
+        "maxScore": 4,
+        "epsilon": 0.2512
+      },
+      {
+        "episode": 2600,
+        "avgScore": 0.15,
+        "maxScore": 2,
+        "epsilon": 0.2239
+      },
+      {
+        "episode": 2800,
+        "avgScore": 0.85,
+        "maxScore": 9,
+        "epsilon": 0.1995
+      },
+      {
+        "episode": 3000,
+        "avgScore": 0.65,
+        "maxScore": 8,
+        "epsilon": 0.1778
+      },
+      {
+        "episode": 3200,
+        "avgScore": 1.12,
+        "maxScore": 10,
+        "epsilon": 0.1585
+      },
+      {
+        "episode": 3400,
+        "avgScore": 1.52,
+        "maxScore": 12,
+        "epsilon": 0.1413
+      },
+      {
+        "episode": 3600,
+        "avgScore": 1.65,
+        "maxScore": 10,
+        "epsilon": 0.1259
+      },
+      {
+        "episode": 3800,
+        "avgScore": 2.08,
+        "maxScore": 13,
+        "epsilon": 0.1122
+      },
+      {
+        "episode": 4000,
+        "avgScore": 1.32,
+        "maxScore": 14,
+        "epsilon": 0.1
+      },
+      {
+        "episode": 4200,
+        "avgScore": 2.24,
+        "maxScore": 15,
+        "epsilon": 0.0891
+      },
+      {
+        "episode": 4400,
+        "avgScore": 1.65,
+        "maxScore": 10,
+        "epsilon": 0.0794
+      },
+      {
+        "episode": 4600,
+        "avgScore": 2.06,
+        "maxScore": 9,
+        "epsilon": 0.0708
+      },
+      {
+        "episode": 4800,
+        "avgScore": 1.88,
+        "maxScore": 9,
+        "epsilon": 0.0631
+      },
+      {
+        "episode": 5000,
+        "avgScore": 1.46,
+        "maxScore": 7,
+        "epsilon": 0.0562
+      },
+      {
+        "episode": 5200,
+        "avgScore": 0.82,
+        "maxScore": 7,
+        "epsilon": 0.0501
+      },
+      {
+        "episode": 5400,
+        "avgScore": 0.74,
+        "maxScore": 6,
+        "epsilon": 0.0447
+      },
+      {
+        "episode": 5600,
+        "avgScore": 0.46,
+        "maxScore": 5,
+        "epsilon": 0.0398
+      },
+      {
+        "episode": 5800,
+        "avgScore": 0.15,
+        "maxScore": 2,
+        "epsilon": 0.0355
+      },
+      {
+        "episode": 6000,
+        "avgScore": 0.13,
+        "maxScore": 2,
+        "epsilon": 0.0316
+      },
+      {
+        "episode": 6200,
+        "avgScore": 0.04,
+        "maxScore": 3,
+        "epsilon": 0.0282
+      },
+      {
+        "episode": 6400,
+        "avgScore": 0.03,
+        "maxScore": 3,
+        "epsilon": 0.0251
+      },
+      {
+        "episode": 6600,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.0224
+      },
+      {
+        "episode": 6800,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.02
+      },
+      {
+        "episode": 7000,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.0178
+      },
+      {
+        "episode": 7200,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.0158
+      },
+      {
+        "episode": 7400,
+        "avgScore": 0.05,
+        "maxScore": 2,
+        "epsilon": 0.0141
+      },
+      {
+        "episode": 7600,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.0126
+      },
+      {
+        "episode": 7800,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.0112
+      },
+      {
+        "episode": 8000,
+        "avgScore": 0.15,
+        "maxScore": 1,
+        "epsilon": 0.01
+      },
+      {
+        "episode": 8200,
+        "avgScore": 0.32,
+        "maxScore": 1,
+        "epsilon": 0.0089
+      },
+      {
+        "episode": 8400,
+        "avgScore": 0.07,
+        "maxScore": 1,
+        "epsilon": 0.0079
+      },
+      {
+        "episode": 8600,
+        "avgScore": 0.86,
+        "maxScore": 5,
+        "epsilon": 0.0071
+      },
+      {
+        "episode": 8800,
+        "avgScore": 0.1,
+        "maxScore": 3,
+        "epsilon": 0.0063
+      },
+      {
+        "episode": 9000,
+        "avgScore": 0.01,
+        "maxScore": 1,
+        "epsilon": 0.0056
+      },
+      {
+        "episode": 9200,
+        "avgScore": 0.01,
+        "maxScore": 3,
+        "epsilon": 0.005
+      },
+      {
+        "episode": 9400,
+        "avgScore": 0.32,
+        "maxScore": 12,
+        "epsilon": 0.0045
+      },
+      {
+        "episode": 9600,
+        "avgScore": 0.3,
+        "maxScore": 6,
+        "epsilon": 0.004
+      },
+      {
+        "episode": 9800,
+        "avgScore": 4.97,
+        "maxScore": 95,
+        "epsilon": 0.0035
+      },
+      {
+        "episode": 10000,
+        "avgScore": 12.65,
+        "maxScore": 92,
+        "epsilon": 0.0032
+      },
+      {
+        "episode": 10200,
+        "avgScore": 5.46,
+        "maxScore": 35,
+        "epsilon": 0.0028
+      },
+      {
+        "episode": 10400,
+        "avgScore": 4.23,
+        "maxScore": 24,
+        "epsilon": 0.0025
+      },
+      {
+        "episode": 10600,
+        "avgScore": 3.58,
+        "maxScore": 28,
+        "epsilon": 0.0022
+      },
+      {
+        "episode": 10800,
+        "avgScore": 5.31,
+        "maxScore": 32,
+        "epsilon": 0.002
+      },
+      {
+        "episode": 11000,
+        "avgScore": 6.78,
+        "maxScore": 45,
+        "epsilon": 0.0018
+      },
+      {
+        "episode": 11200,
+        "avgScore": 8.16,
+        "maxScore": 68,
+        "epsilon": 0.0016
+      },
+      {
+        "episode": 11400,
+        "avgScore": 7.04,
+        "maxScore": 36,
+        "epsilon": 0.0014
+      },
+      {
+        "episode": 11600,
+        "avgScore": 8.38,
+        "maxScore": 49,
+        "epsilon": 0.0013
+      },
+      {
+        "episode": 11800,
+        "avgScore": 7.34,
+        "maxScore": 57,
+        "epsilon": 0.0011
+      },
+      {
+        "episode": 12000,
+        "avgScore": 6.72,
+        "maxScore": 51,
+        "epsilon": 0.001
+      },
+      {
+        "episode": 12200,
+        "avgScore": 5.4,
+        "maxScore": 26,
+        "epsilon": 0.0009
+      },
+      {
+        "episode": 12400,
+        "avgScore": 6.42,
+        "maxScore": 33,
+        "epsilon": 0.0008
+      },
+      {
+        "episode": 12600,
+        "avgScore": 5.02,
+        "maxScore": 20,
+        "epsilon": 0.0007
+      },
+      {
+        "episode": 12800,
+        "avgScore": 6.55,
+        "maxScore": 47,
+        "epsilon": 0.0006
+      },
+      {
+        "episode": 13000,
+        "avgScore": 5.71,
+        "maxScore": 38,
+        "epsilon": 0.0006
+      },
+      {
+        "episode": 13200,
+        "avgScore": 7.36,
+        "maxScore": 45,
+        "epsilon": 0.0005
+      },
+      {
+        "episode": 13400,
+        "avgScore": 7.18,
+        "maxScore": 39,
+        "epsilon": 0.0004
+      },
+      {
+        "episode": 13600,
+        "avgScore": 7.92,
+        "maxScore": 46,
+        "epsilon": 0.0004
+      },
+      {
+        "episode": 13800,
+        "avgScore": 10.62,
+        "maxScore": 63,
+        "epsilon": 0.0004
+      },
+      {
+        "episode": 14000,
+        "avgScore": 6.81,
+        "maxScore": 34,
+        "epsilon": 0.0003
+      },
+      {
+        "episode": 14200,
+        "avgScore": 6.48,
+        "maxScore": 36,
+        "epsilon": 0.0003
+      },
+      {
+        "episode": 14400,
+        "avgScore": 10.38,
+        "maxScore": 57,
+        "epsilon": 0.0003
+      },
+      {
+        "episode": 14600,
+        "avgScore": 14.7,
+        "maxScore": 94,
+        "epsilon": 0.0002
+      },
+      {
+        "episode": 14800,
+        "avgScore": 13.44,
+        "maxScore": 107,
+        "epsilon": 0.0002
+      },
+      {
+        "episode": 15000,
+        "avgScore": 13.1,
+        "maxScore": 133,
+        "epsilon": 0.0002
+      },
+      {
+        "episode": 15200,
+        "avgScore": 7.28,
+        "maxScore": 116,
+        "epsilon": 0.0002
+      },
+      {
+        "episode": 15400,
+        "avgScore": 18.95,
+        "maxScore": 141,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 15600,
+        "avgScore": 8.52,
+        "maxScore": 68,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 15800,
+        "avgScore": 11.98,
+        "maxScore": 160,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 16000,
+        "avgScore": 6.24,
+        "maxScore": 185,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 16200,
+        "avgScore": 5.55,
+        "maxScore": 104,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 16400,
+        "avgScore": 11.08,
+        "maxScore": 146,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 16600,
+        "avgScore": 29.17,
+        "maxScore": 208,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 16800,
+        "avgScore": 9.22,
+        "maxScore": 52,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 17000,
+        "avgScore": 7.7,
+        "maxScore": 57,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 17200,
+        "avgScore": 8.26,
+        "maxScore": 64,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 17400,
+        "avgScore": 15.6,
+        "maxScore": 114,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 17600,
+        "avgScore": 22.18,
+        "maxScore": 150,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 17800,
+        "avgScore": 18.59,
+        "maxScore": 138,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 18000,
+        "avgScore": 17.8,
+        "maxScore": 256,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 18200,
+        "avgScore": 11.93,
+        "maxScore": 106,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 18400,
+        "avgScore": 8.52,
+        "maxScore": 70,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 18600,
+        "avgScore": 12.95,
+        "maxScore": 97,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 18800,
+        "avgScore": 13.15,
+        "maxScore": 171,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 19000,
+        "avgScore": 17.61,
+        "maxScore": 97,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 19200,
+        "avgScore": 18.91,
+        "maxScore": 95,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 19400,
+        "avgScore": 24.07,
+        "maxScore": 184,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 19600,
+        "avgScore": 21.81,
+        "maxScore": 190,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 19800,
+        "avgScore": 22.18,
+        "maxScore": 297,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 20000,
+        "avgScore": 19.78,
+        "maxScore": 272,
+        "epsilon": 0.0001
+      }
+    ],
+    "checkpoints": [
+      {
+        "episode": 2000,
+        "mean": 0.58,
+        "max": 2,
+        "min": 0,
+        "stdDev": 0.51,
+        "median": 1
+      },
+      {
+        "episode": 4000,
+        "mean": 11.67,
+        "max": 40,
+        "min": 2,
+        "stdDev": 9.84,
+        "median": 8
+      },
+      {
+        "episode": 6000,
+        "mean": 0,
+        "max": 0,
+        "min": 0,
+        "stdDev": 0,
+        "median": 0
+      },
+      {
+        "episode": 8000,
+        "mean": 0.61,
+        "max": 1,
+        "min": 0,
+        "stdDev": 0.49,
+        "median": 1
+      },
+      {
+        "episode": 10000,
+        "mean": 9.59,
+        "max": 45,
+        "min": 2,
+        "stdDev": 7.96,
+        "median": 7
+      },
+      {
+        "episode": 12000,
+        "mean": 3.93,
+        "max": 13,
+        "min": 1,
+        "stdDev": 2.72,
+        "median": 3
+      },
+      {
+        "episode": 14000,
+        "mean": 4.94,
+        "max": 13,
+        "min": 1,
+        "stdDev": 2.92,
+        "median": 4
+      },
+      {
+        "episode": 16000,
+        "mean": 5.01,
+        "max": 18,
+        "min": 1,
+        "stdDev": 3.64,
+        "median": 4
+      },
+      {
+        "episode": 18000,
+        "mean": 11.7,
+        "max": 44,
+        "min": 1,
+        "stdDev": 9.86,
+        "median": 9.5
+      },
+      {
+        "episode": 20000,
+        "mean": 19.47,
+        "max": 101,
+        "min": 2,
+        "stdDev": 18.07,
+        "median": 15
+      }
+    ],
+    "finalEval": {
+      "mean": 18.78,
+      "max": 101,
+      "min": 2,
+      "stdDev": 17.44,
+      "median": 14,
+      "episodes": 200,
+      "rawScores": [
+        52,
+        101,
+        9,
+        23,
+        6,
+        4,
+        22,
+        28,
+        17,
+        8,
+        28,
+        74,
+        4,
+        34,
+        18,
+        32,
+        19,
+        31,
+        15,
+        15,
+        61,
+        19,
+        9,
+        21,
+        70,
+        55,
+        10,
+        53,
+        13,
+        11,
+        39,
+        3,
+        25,
+        3,
+        2,
+        20,
+        21,
+        2,
+        2,
+        3,
+        2,
+        46,
+        23,
+        9,
+        23,
+        27,
+        7,
+        8,
+        10,
+        3,
+        14,
+        18,
+        16,
+        2,
+        49,
+        4,
+        28,
+        23,
+        68,
+        9,
+        10,
+        4,
+        5,
+        18,
+        36,
+        26,
+        24,
+        9,
+        4,
+        15,
+        6,
+        24,
+        11,
+        3,
+        7,
+        3,
+        18,
+        4,
+        15,
+        28,
+        11,
+        4,
+        53,
+        23,
+        15,
+        28,
+        18,
+        4,
+        18,
+        4,
+        16,
+        16,
+        4,
+        9,
+        13,
+        15,
+        11,
+        27,
+        11,
+        6,
+        6,
+        26,
+        26,
+        2,
+        60,
+        22,
+        12,
+        18,
+        30,
+        69,
+        7,
+        14,
+        39,
+        35,
+        9,
+        3,
+        25,
+        18,
+        4,
+        18,
+        6,
+        6,
+        19,
+        21,
+        22,
+        26,
+        11,
+        24,
+        12,
+        11,
+        3,
+        6,
+        8,
+        9,
+        4,
+        53,
+        8,
+        33,
+        17,
+        7,
+        6,
+        18,
+        12,
+        28,
+        9,
+        14,
+        7,
+        32,
+        86,
+        8,
+        31,
+        30,
+        27,
+        13,
+        2,
+        9,
+        36,
+        7,
+        8,
+        84,
+        22,
+        17,
+        5,
+        25,
+        7,
+        20,
+        6,
+        4,
+        12,
+        12,
+        9,
+        2,
+        36,
+        6,
+        18,
+        7,
+        56,
+        8,
+        30,
+        21,
+        28,
+        4,
+        9,
+        21,
+        3,
+        4,
+        3,
+        3,
+        6,
+        18,
+        59,
+        11,
+        10,
+        28,
+        10,
+        28,
+        5,
+        15,
+        2,
+        3
+      ]
+    }
+  },
+  "doubleDqn": {
+    "trainingEpisodes": 30000,
+    "trainingTimeSec": 5524.54,
+    "hyperparameters": {
+      "gamma": 0.99,
+      "learningRate": 0.001,
+      "epsilonStart": 1,
+      "epsilonEnd": 0.01,
+      "epsilonDecay": 0.9996163094458892,
+      "batchSize": 64,
+      "replayBufferSize": 10000,
+      "targetUpdateFreq": 5000,
+      "networkArchitecture": "3 → 24(ReLU) → 24(ReLU) → 2(Linear)",
+      "algorithm": "Double DQN: target = r + γ·Q_target(s', argmax Q_main(s',a'))"
+    },
+    "learningCurve": [
+      {
+        "episode": 300,
+        "avgScore": 0.02,
+        "maxScore": 1,
+        "epsilon": 0.8913
+      },
+      {
+        "episode": 600,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.7943
+      },
+      {
+        "episode": 900,
+        "avgScore": 0,
+        "maxScore": 0,
+        "epsilon": 0.7079
+      },
+      {
+        "episode": 1200,
+        "avgScore": 0.03,
+        "maxScore": 2,
+        "epsilon": 0.631
+      },
+      {
+        "episode": 1500,
+        "avgScore": 0.02,
+        "maxScore": 1,
+        "epsilon": 0.5623
+      },
+      {
+        "episode": 1800,
+        "avgScore": 0.07,
+        "maxScore": 2,
+        "epsilon": 0.5012
+      },
+      {
+        "episode": 2100,
+        "avgScore": 0.09,
+        "maxScore": 2,
+        "epsilon": 0.4467
+      },
+      {
+        "episode": 2400,
+        "avgScore": 0.12,
+        "maxScore": 3,
+        "epsilon": 0.3981
+      },
+      {
+        "episode": 2700,
+        "avgScore": 0.13,
+        "maxScore": 2,
+        "epsilon": 0.3548
+      },
+      {
+        "episode": 3000,
+        "avgScore": 0.23,
+        "maxScore": 3,
+        "epsilon": 0.3162
+      },
+      {
+        "episode": 3300,
+        "avgScore": 0.36,
+        "maxScore": 5,
+        "epsilon": 0.2818
+      },
+      {
+        "episode": 3600,
+        "avgScore": 0.53,
+        "maxScore": 6,
+        "epsilon": 0.2512
+      },
+      {
+        "episode": 3900,
+        "avgScore": 0.67,
+        "maxScore": 5,
+        "epsilon": 0.2239
+      },
+      {
+        "episode": 4200,
+        "avgScore": 0.65,
+        "maxScore": 8,
+        "epsilon": 0.1995
+      },
+      {
+        "episode": 4500,
+        "avgScore": 0.54,
+        "maxScore": 5,
+        "epsilon": 0.1778
+      },
+      {
+        "episode": 4800,
+        "avgScore": 0.57,
+        "maxScore": 5,
+        "epsilon": 0.1585
+      },
+      {
+        "episode": 5100,
+        "avgScore": 0.51,
+        "maxScore": 5,
+        "epsilon": 0.1413
+      },
+      {
+        "episode": 5400,
+        "avgScore": 0.46,
+        "maxScore": 5,
+        "epsilon": 0.1259
+      },
+      {
+        "episode": 5700,
+        "avgScore": 0.61,
+        "maxScore": 5,
+        "epsilon": 0.1122
+      },
+      {
+        "episode": 6000,
+        "avgScore": 0.69,
+        "maxScore": 8,
+        "epsilon": 0.1
+      },
+      {
+        "episode": 6300,
+        "avgScore": 0.96,
+        "maxScore": 5,
+        "epsilon": 0.0891
+      },
+      {
+        "episode": 6600,
+        "avgScore": 1.11,
+        "maxScore": 6,
+        "epsilon": 0.0794
+      },
+      {
+        "episode": 6900,
+        "avgScore": 1.21,
+        "maxScore": 9,
+        "epsilon": 0.0708
+      },
+      {
+        "episode": 7200,
+        "avgScore": 1.27,
+        "maxScore": 8,
+        "epsilon": 0.0631
+      },
+      {
+        "episode": 7500,
+        "avgScore": 1.74,
+        "maxScore": 13,
+        "epsilon": 0.0562
+      },
+      {
+        "episode": 7800,
+        "avgScore": 2.12,
+        "maxScore": 13,
+        "epsilon": 0.0501
+      },
+      {
+        "episode": 8100,
+        "avgScore": 2.42,
+        "maxScore": 13,
+        "epsilon": 0.0447
+      },
+      {
+        "episode": 8400,
+        "avgScore": 2.59,
+        "maxScore": 15,
+        "epsilon": 0.0398
+      },
+      {
+        "episode": 8700,
+        "avgScore": 2.76,
+        "maxScore": 16,
+        "epsilon": 0.0355
+      },
+      {
+        "episode": 9000,
+        "avgScore": 4.02,
+        "maxScore": 23,
+        "epsilon": 0.0316
+      },
+      {
+        "episode": 9300,
+        "avgScore": 4.41,
+        "maxScore": 40,
+        "epsilon": 0.0282
+      },
+      {
+        "episode": 9600,
+        "avgScore": 4.94,
+        "maxScore": 36,
+        "epsilon": 0.0251
+      },
+      {
+        "episode": 9900,
+        "avgScore": 5.06,
+        "maxScore": 32,
+        "epsilon": 0.0224
+      },
+      {
+        "episode": 10200,
+        "avgScore": 6.59,
+        "maxScore": 40,
+        "epsilon": 0.02
+      },
+      {
+        "episode": 10500,
+        "avgScore": 7.36,
+        "maxScore": 46,
+        "epsilon": 0.0178
+      },
+      {
+        "episode": 10800,
+        "avgScore": 5.83,
+        "maxScore": 47,
+        "epsilon": 0.0158
+      },
+      {
+        "episode": 11100,
+        "avgScore": 6.89,
+        "maxScore": 39,
+        "epsilon": 0.0141
+      },
+      {
+        "episode": 11400,
+        "avgScore": 7.14,
+        "maxScore": 72,
+        "epsilon": 0.0126
+      },
+      {
+        "episode": 11700,
+        "avgScore": 6.47,
+        "maxScore": 40,
+        "epsilon": 0.0112
+      },
+      {
+        "episode": 12000,
+        "avgScore": 6.69,
+        "maxScore": 90,
+        "epsilon": 0.01
+      },
+      {
+        "episode": 12300,
+        "avgScore": 6.52,
+        "maxScore": 72,
+        "epsilon": 0.0089
+      },
+      {
+        "episode": 12600,
+        "avgScore": 7.64,
+        "maxScore": 84,
+        "epsilon": 0.0079
+      },
+      {
+        "episode": 12900,
+        "avgScore": 10.43,
+        "maxScore": 109,
+        "epsilon": 0.0071
+      },
+      {
+        "episode": 13200,
+        "avgScore": 5.35,
+        "maxScore": 67,
+        "epsilon": 0.0063
+      },
+      {
+        "episode": 13500,
+        "avgScore": 6.11,
+        "maxScore": 53,
+        "epsilon": 0.0056
+      },
+      {
+        "episode": 13800,
+        "avgScore": 4.54,
+        "maxScore": 57,
+        "epsilon": 0.005
+      },
+      {
+        "episode": 14100,
+        "avgScore": 5.98,
+        "maxScore": 54,
+        "epsilon": 0.0045
+      },
+      {
+        "episode": 14400,
+        "avgScore": 5.62,
+        "maxScore": 46,
+        "epsilon": 0.004
+      },
+      {
+        "episode": 14700,
+        "avgScore": 4.97,
+        "maxScore": 40,
+        "epsilon": 0.0035
+      },
+      {
+        "episode": 15000,
+        "avgScore": 3.92,
+        "maxScore": 17,
+        "epsilon": 0.0032
+      },
+      {
+        "episode": 15300,
+        "avgScore": 3.32,
+        "maxScore": 16,
+        "epsilon": 0.0028
+      },
+      {
+        "episode": 15600,
+        "avgScore": 3.33,
+        "maxScore": 15,
+        "epsilon": 0.0025
+      },
+      {
+        "episode": 15900,
+        "avgScore": 3,
+        "maxScore": 14,
+        "epsilon": 0.0022
+      },
+      {
+        "episode": 16200,
+        "avgScore": 2.39,
+        "maxScore": 9,
+        "epsilon": 0.002
+      },
+      {
+        "episode": 16500,
+        "avgScore": 2.13,
+        "maxScore": 10,
+        "epsilon": 0.0018
+      },
+      {
+        "episode": 16800,
+        "avgScore": 1.35,
+        "maxScore": 15,
+        "epsilon": 0.0016
+      },
+      {
+        "episode": 17100,
+        "avgScore": 1.23,
+        "maxScore": 14,
+        "epsilon": 0.0014
+      },
+      {
+        "episode": 17400,
+        "avgScore": 0.88,
+        "maxScore": 13,
+        "epsilon": 0.0013
+      },
+      {
+        "episode": 17700,
+        "avgScore": 0.8,
+        "maxScore": 12,
+        "epsilon": 0.0011
+      },
+      {
+        "episode": 18000,
+        "avgScore": 0.52,
+        "maxScore": 9,
+        "epsilon": 0.001
+      },
+      {
+        "episode": 18300,
+        "avgScore": 0.55,
+        "maxScore": 6,
+        "epsilon": 0.0009
+      },
+      {
+        "episode": 18600,
+        "avgScore": 0.92,
+        "maxScore": 9,
+        "epsilon": 0.0008
+      },
+      {
+        "episode": 18900,
+        "avgScore": 1.92,
+        "maxScore": 15,
+        "epsilon": 0.0007
+      },
+      {
+        "episode": 19200,
+        "avgScore": 3.53,
+        "maxScore": 25,
+        "epsilon": 0.0006
+      },
+      {
+        "episode": 19500,
+        "avgScore": 4.25,
+        "maxScore": 27,
+        "epsilon": 0.0006
+      },
+      {
+        "episode": 19800,
+        "avgScore": 8.6,
+        "maxScore": 59,
+        "epsilon": 0.0005
+      },
+      {
+        "episode": 20100,
+        "avgScore": 8.62,
+        "maxScore": 85,
+        "epsilon": 0.0004
+      },
+      {
+        "episode": 20400,
+        "avgScore": 7.44,
+        "maxScore": 54,
+        "epsilon": 0.0004
+      },
+      {
+        "episode": 20700,
+        "avgScore": 6.86,
+        "maxScore": 40,
+        "epsilon": 0.0004
+      },
+      {
+        "episode": 21000,
+        "avgScore": 5.75,
+        "maxScore": 33,
+        "epsilon": 0.0003
+      },
+      {
+        "episode": 21300,
+        "avgScore": 5.08,
+        "maxScore": 24,
+        "epsilon": 0.0003
+      },
+      {
+        "episode": 21600,
+        "avgScore": 4.49,
+        "maxScore": 25,
+        "epsilon": 0.0003
+      },
+      {
+        "episode": 21900,
+        "avgScore": 4.49,
+        "maxScore": 19,
+        "epsilon": 0.0002
+      },
+      {
+        "episode": 22200,
+        "avgScore": 5.05,
+        "maxScore": 28,
+        "epsilon": 0.0002
+      },
+      {
+        "episode": 22500,
+        "avgScore": 4.87,
+        "maxScore": 36,
+        "epsilon": 0.0002
+      },
+      {
+        "episode": 22800,
+        "avgScore": 4.67,
+        "maxScore": 22,
+        "epsilon": 0.0002
+      },
+      {
+        "episode": 23100,
+        "avgScore": 4.5,
+        "maxScore": 25,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 23400,
+        "avgScore": 4.43,
+        "maxScore": 28,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 23700,
+        "avgScore": 4.71,
+        "maxScore": 26,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 24000,
+        "avgScore": 4.96,
+        "maxScore": 22,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 24300,
+        "avgScore": 4.68,
+        "maxScore": 21,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 24600,
+        "avgScore": 4.28,
+        "maxScore": 26,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 24900,
+        "avgScore": 4.73,
+        "maxScore": 24,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 25200,
+        "avgScore": 5.12,
+        "maxScore": 32,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 25500,
+        "avgScore": 4.71,
+        "maxScore": 26,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 25800,
+        "avgScore": 5.23,
+        "maxScore": 28,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 26100,
+        "avgScore": 4.73,
+        "maxScore": 25,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 26400,
+        "avgScore": 5.25,
+        "maxScore": 48,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 26700,
+        "avgScore": 6.17,
+        "maxScore": 51,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 27000,
+        "avgScore": 5.69,
+        "maxScore": 62,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 27300,
+        "avgScore": 7.03,
+        "maxScore": 50,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 27600,
+        "avgScore": 7.96,
+        "maxScore": 55,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 27900,
+        "avgScore": 7.33,
+        "maxScore": 50,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 28200,
+        "avgScore": 8.03,
+        "maxScore": 46,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 28500,
+        "avgScore": 8.34,
+        "maxScore": 58,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 28800,
+        "avgScore": 9.48,
+        "maxScore": 46,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 29100,
+        "avgScore": 7.78,
+        "maxScore": 34,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 29400,
+        "avgScore": 6.7,
+        "maxScore": 44,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 29700,
+        "avgScore": 6.61,
+        "maxScore": 39,
+        "epsilon": 0.0001
+      },
+      {
+        "episode": 30000,
+        "avgScore": 7.53,
+        "maxScore": 69,
+        "epsilon": 0.0001
+      }
+    ],
+    "checkpoints": [
+      {
+        "episode": 3000,
+        "mean": 0,
+        "max": 0,
+        "min": 0,
+        "stdDev": 0,
+        "median": 0
+      },
+      {
+        "episode": 6000,
+        "mean": 2.22,
+        "max": 13,
+        "min": 1,
+        "stdDev": 1.92,
+        "median": 2
+      },
+      {
+        "episode": 9000,
+        "mean": 9.11,
+        "max": 48,
+        "min": 1,
+        "stdDev": 7.58,
+        "median": 7
+      },
+      {
+        "episode": 12000,
+        "mean": 16.55,
+        "max": 88,
+        "min": 1,
+        "stdDev": 17.26,
+        "median": 12
+      },
+      {
+        "episode": 15000,
+        "mean": 3.73,
+        "max": 10,
+        "min": 1,
+        "stdDev": 2.2,
+        "median": 3
+      },
+      {
+        "episode": 18000,
+        "mean": 0,
+        "max": 0,
+        "min": 0,
+        "stdDev": 0,
+        "median": 0
+      },
+      {
+        "episode": 21000,
+        "mean": 6.31,
+        "max": 46,
+        "min": 1,
+        "stdDev": 5.99,
+        "median": 5
+      },
+      {
+        "episode": 24000,
+        "mean": 2.97,
+        "max": 10,
+        "min": 1,
+        "stdDev": 1.89,
+        "median": 2
+      },
+      {
+        "episode": 27000,
+        "mean": 8.62,
+        "max": 36,
+        "min": 1,
+        "stdDev": 7.84,
+        "median": 6
+      },
+      {
+        "episode": 30000,
+        "mean": 8.84,
+        "max": 66,
+        "min": 1,
+        "stdDev": 8.73,
+        "median": 7
+      }
+    ],
+    "finalEval": {
+      "mean": 16.23,
+      "max": 88,
+      "min": 1,
+      "stdDev": 15.27,
+      "median": 11.5,
+      "episodes": 200,
+      "rawScores": [
+        5,
+        37,
+        13,
+        2,
+        81,
+        3,
+        10,
+        12,
+        3,
+        3,
+        28,
+        42,
+        21,
+        40,
+        7,
+        24,
+        2,
+        29,
+        28,
+        14,
+        6,
+        19,
+        63,
+        27,
+        13,
+        14,
+        15,
+        35,
+        19,
+        23,
+        10,
+        3,
+        3,
+        3,
+        7,
+        13,
+        10,
+        5,
+        16,
+        88,
+        10,
+        41,
+        11,
+        2,
+        15,
+        28,
+        32,
+        2,
+        27,
+        8,
+        2,
+        13,
+        2,
+        2,
+        21,
+        6,
+        39,
+        24,
+        18,
+        9,
+        3,
+        4,
+        52,
+        7,
+        17,
+        6,
+        3,
+        41,
+        11,
+        14,
+        24,
+        2,
+        15,
+        83,
+        26,
+        3,
+        35,
+        20,
+        24,
+        4,
+        8,
+        4,
+        6,
+        23,
+        1,
+        17,
+        12,
+        4,
+        6,
+        2,
+        2,
+        5,
+        4,
+        14,
+        13,
+        14,
+        2,
+        10,
+        2,
+        4,
+        11,
+        10,
+        10,
+        28,
+        24,
+        24,
+        5,
+        22,
+        24,
+        7,
+        25,
+        18,
+        7,
+        6,
+        33,
+        7,
+        31,
+        10,
+        10,
+        18,
+        2,
+        11,
+        7,
+        12,
+        13,
+        24,
+        10,
+        28,
+        20,
+        28,
+        9,
+        7,
+        8,
+        35,
+        4,
+        16,
+        7,
+        15,
+        33,
+        2,
+        3,
+        18,
+        6,
+        10,
+        9,
+        14,
+        15,
+        6,
+        3,
+        8,
+        11,
+        15,
+        2,
+        23,
+        23,
+        2,
+        32,
+        53,
+        30,
+        26,
+        2,
+        2,
+        8,
+        4,
+        3,
+        10,
+        2,
+        14,
+        22,
+        3,
+        24,
+        85,
+        8,
+        21,
+        11,
+        32,
+        26,
+        2,
+        28,
+        6,
+        6,
+        4,
+        20,
+        8,
+        27,
+        2,
+        31,
+        40,
+        17,
+        2,
+        22,
+        32,
+        19,
+        10,
+        24,
+        21,
+        10,
+        3,
+        7,
+        44
+      ]
+    }
+  }
+}

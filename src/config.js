@@ -24,7 +24,7 @@ export const CONFIG = {
 
     // ── Pipes ───────────────────────────────────────────────
     pipe: {
-        gap: 150,               // Increased drastically to allow random walk to pass
+        gap: 150,               // Reverted to v11 for direct comparison
         spawnInterval: 100,     // spawn a new pipe every N frames
         // y offset range: y = -210 * clamp(random()+1, 1, 1.8)
         yOffsetBase: -210,
@@ -62,7 +62,7 @@ export const CONFIG = {
     // ── Q-Learning RL ─────────────────────────────────────
     rl: {
         qlearning: {
-            alpha: 0.1,             // learning rate
+            alpha: 0.1,              // learning rate
             gamma: 0.95,            // discount factor
             epsilonStart: 1.0,      // initial exploration rate
             epsilonEnd: 0.01,       // minimum exploration rate

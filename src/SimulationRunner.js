@@ -16,7 +16,7 @@ import { Action } from './config.js';
  *   runner.setStepsPerFrame(16);
  *   runner.startVisual(seed);
  *   // or
- *   await runner.runHeadless({ episodes: 200, seed: 42 });
+ *   await runner.runHeadless({ episodes: 200, seed: 0 });
  */
 export class SimulationRunner {
     /**

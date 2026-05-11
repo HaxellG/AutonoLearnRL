@@ -15,7 +15,7 @@ const LOG_EVERY = cfg.training.logEvery;
 const MA_WINDOW = cfg.training.movingAvgWindow;
 
 const env = new FlappyEnv();
-const agent = new QLearningAgent({ seed: 42 });
+const agent = new QLearningAgent({ seed: 0 });
 const trainer = new QTrainer(agent, env);
 
 console.log('\n🧠 Q-Learning Training');

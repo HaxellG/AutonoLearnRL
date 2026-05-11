@@ -17,26 +17,25 @@ import { DoubleDQNAgent } from '../agents/DoubleDQNAgent.js';
 import fs from 'fs';
 import path from 'path';
 
-import * as tf from '@tensorflow/tfjs';
+import * as tf from '@tensorflow/tfjs-node';
 globalThis.tf = tf;
 
 // ─── Experiment Parameters ───────────────────────────────────
-CONFIG.env.maxStepsPerEpisode = 5000;
 
 const Q_TOTAL_EPISODES = 20000;
-const DQN_TOTAL_EPISODES = 5000;
-const DDQN_TOTAL_EPISODES = 5000;
+const DQN_TOTAL_EPISODES = 20000;
+const DDQN_TOTAL_EPISODES = 30000;
 
 const Q_LOG_INTERVAL = 200;
-const DQN_LOG_INTERVAL = 50;
-const DDQN_LOG_INTERVAL = 50;
+const DQN_LOG_INTERVAL = 200;
+const DDQN_LOG_INTERVAL = 300;
 
 const Q_CHECKPOINT_INTERVAL = 2000;
-const DQN_CHECKPOINT_INTERVAL = 500;
-const DDQN_CHECKPOINT_INTERVAL = 500;
+const DQN_CHECKPOINT_INTERVAL = 2000;
+const DDQN_CHECKPOINT_INTERVAL = 3000;
 
 const EVAL_EPISODES = 100;
-const EVAL_SEED = 424242;
+const EVAL_SEED = 0;
 const FINAL_EVAL_EPISODES = 200;
 
 // ─── Utility Functions ────────────────────────────────────────
@@ -80,13 +79,15 @@ function evaluateAgent(agent, env, episodes, startSeed) {
 function trainQLearning(totalEpisodes, logInterval, checkpointInterval) {
     console.log(`\n  ── Q-Learning: ${totalEpisodes} episodes ──`);
     const agent = new QLearningAgent();
-    agent.epsilonDecay = Math.pow(0.01, 1 / (totalEpisodes * 0.8));
+    agent.epsilonDecay = Math.pow(agent.epsilonEnd / agent.epsilon, 1 / (totalEpisodes * 0.8));
     const env = new FlappyEnv();
     const evalEnv = new FlappyEnv();
 
     const learningCurve = [];
     const checkpoints = [];
     let windowScores = [];
+    let bestMean = -Infinity;
+    let bestQTable = null;
 
     let lastState, lastAction;
     const runner = new SimulationRunner(env, {
@@ -114,6 +115,13 @@ function trainQLearning(totalEpisodes, logInterval, checkpointInterval) {
                 const stats = computeStats(scores);
                 checkpoints.push({ episode: ep, ...stats });
                 console.log(`\n    [Checkpoint @ ${ep}] Eval(${EVAL_EPISODES} ep): Mean=${stats.mean}, Max=${stats.max}, StdDev=${stats.stdDev}`);
+                
+                if (stats.mean > bestMean) {
+                    bestMean = stats.mean;
+                    bestQTable = new Map();
+                    for (const [k, v] of agent._qTable) bestQTable.set(k, [...v]);
+                    console.log(`    🌟 Nuevo mejor modelo guardado (Mean: ${stats.mean})`);
+                }
             }
         }
     });
@@ -121,6 +129,12 @@ function trainQLearning(totalEpisodes, logInterval, checkpointInterval) {
     const t0 = performance.now();
     runner.runSync({ episodes: totalEpisodes });
     const elapsed = ((performance.now() - t0) / 1000).toFixed(2);
+    
+    if (bestQTable) {
+        agent._qTable = bestQTable;
+        console.log(`\n  Restaurando mejor modelo (Mean: ${bestMean}) para evaluación final.`);
+    }
+
     console.log(`\n  Training complete in ${elapsed}s\n`);
 
     return { agent, learningCurve, checkpoints, trainingTimeSec: Number(elapsed) };
@@ -130,7 +144,7 @@ function trainQLearning(totalEpisodes, logInterval, checkpointInterval) {
 
 async function trainDQNFamily(agentName, agent, totalEpisodes, logInterval, checkpointInterval) {
     console.log(`\n  ── ${agentName}: ${totalEpisodes} episodes ──`);
-    agent.epsilonDecay = Math.pow(0.01, 1 / (totalEpisodes * 0.8));
+    agent.epsilonDecay = Math.pow(agent.epsilonMin / agent.epsilon, 1 / (totalEpisodes * 0.8));
     const env = new FlappyEnv();
     const evalEnv = new FlappyEnv();
 
@@ -138,6 +152,8 @@ async function trainDQNFamily(agentName, agent, totalEpisodes, logInterval, chec
     const checkpoints = [];
     let windowScores = [];
     let epCount = 0;
+    let bestMean = -Infinity;
+    let bestWeights = null;
 
     let lastState, lastAction;
     const runner = new SimulationRunner(env, {
@@ -165,6 +181,13 @@ async function trainDQNFamily(agentName, agent, totalEpisodes, logInterval, chec
                 const stats = computeStats(scores);
                 checkpoints.push({ episode: epCount, ...stats });
                 console.log(`\n    [Checkpoint @ ${epCount}] Eval(${EVAL_EPISODES} ep): Mean=${stats.mean}, Max=${stats.max}, StdDev=${stats.stdDev}`);
+                
+                if (stats.mean > bestMean) {
+                    bestMean = stats.mean;
+                    if (bestWeights) bestWeights.forEach(t => t.dispose());
+                    bestWeights = agent.mainNet.getWeights().map(t => t.clone());
+                    console.log(`    🌟 Nuevo mejor modelo guardado (Mean: ${stats.mean})`);
+                }
             }
         }
     });
@@ -172,6 +195,16 @@ async function trainDQNFamily(agentName, agent, totalEpisodes, logInterval, chec
     const t0 = performance.now();
     await runner.runHeadless({ episodes: totalEpisodes, yieldEvery: 32 });
     const elapsed = ((performance.now() - t0) / 1000).toFixed(2);
+    
+    if (bestWeights) {
+        agent.mainNet.setWeights(bestWeights);
+        bestWeights.forEach(t => t.dispose());
+        if (typeof agent._updateTargetNetwork === 'function') {
+            agent._updateTargetNetwork();
+        }
+        console.log(`\n  Restaurando mejor modelo (Mean: ${bestMean}) para evaluación final.`);
+    }
+
     console.log(`\n  Training complete in ${elapsed}s\n`);
 
     return { agent, learningCurve, checkpoints, trainingTimeSec: Number(elapsed) };
@@ -280,11 +313,11 @@ async function main() {
     const resultsDir = path.join(process.cwd(), 'results');
     fs.mkdirSync(resultsDir, { recursive: true });
 
-    const modelsDir = path.join(process.cwd(), 'models');
+    const modelsDir = path.join(process.cwd(), 'models_final');
     saveQAgent(qResult.agent, modelsDir);
     await saveNNAgent(dqnResult.agent, modelsDir, 'dqn');
     await saveNNAgent(ddqnResult.agent, modelsDir, 'ddqn');
-    console.log(`  💾 Models saved to /models/`);
+    console.log(`  💾 Models saved to /models_final/`);
 
     const experimentData = {
         metadata: {
@@ -345,10 +378,11 @@ async function main() {
     };
 
     fs.writeFileSync(
-        path.join(resultsDir, 'experiment_results.json'),
+        path.join(resultsDir, 'experiment_results_final.json'),
         JSON.stringify(experimentData, null, 2)
     );
-    console.log(`  📊 Full results saved to /results/experiment_results.json`);
+    console.log(`  📊 Full results saved to /results/experiment_results_final.json`);
+
     console.log(`\n${'═'.repeat(60)}`);
     console.log(`  EXPERIMENT COMPLETE`);
     console.log(`${'═'.repeat(60)}\n`);

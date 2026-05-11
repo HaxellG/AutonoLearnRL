@@ -21,7 +21,7 @@ export class DQNAgent {
 
         this.learningRate = 0.001;
         this.batchSize = 64;
-        this.targetUpdateFreq = 5000; // Update target network every 5000 steps
+        this.targetUpdateFreq = 5000; // v11 proven stable config
 
         this.actionSpace = 2; // [0, 1]
         this.stateSize = 3;   // [dx, dy, vy]

@@ -111,7 +111,7 @@ async function runBenchmark() {
     const evalEnv = new FlappyEnv();
     const evaluator = new Evaluator(evalEnv, agents);
     
-    const results = evaluator.evaluateAll({ episodes: EVAL_EPISODES, startSeed: 424242 });
+    const results = evaluator.evaluateAll({ episodes: EVAL_EPISODES, startSeed: 0 });
 
     // 4. Reporte
     console.log(`\n🏆 Resultados Comparativos:`);

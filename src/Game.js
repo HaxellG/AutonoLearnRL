@@ -232,7 +232,7 @@ export class Game {
     }
 
     _draw() {
-        this._ctx.fillStyle = '#30c0df';
+        this._ctx.fillStyle = '#79c3f4';
         this._ctx.fillRect(0, 0, this._canvas.width, this._canvas.height);
         this._bg.draw();
         this._pipe.draw();

@@ -146,8 +146,9 @@ export class FlappyEnv {
 
         // ── 4a. Proximity reward shaping ──────────────────────
         //   Bonus proportional to how close bird is to gap center.
-        if (this.pipes.length && this._rProximityScale > 0) {
-            const gapCenterY = this.pipes[0].y + this._pipeH + this._pipeGap / 2;
+        const activePipe = this._getActivePipe();
+        if (activePipe && this._rProximityScale > 0) {
+            const gapCenterY = activePipe.y + this._pipeH + this._pipeGap / 2;
             const dist = Math.abs(this.birdY - gapCenterY);
             const halfGap = this._pipeGap / 2;
             const proximity = Math.max(0, 1 - dist / halfGap);
@@ -212,9 +213,9 @@ export class FlappyEnv {
             collision,
             birdY: this.birdY,
             birdVy: this.birdVy,
-            nextPipeX: this.pipes.length ? this.pipes[0].x : null,
-            gapCenterY: this.pipes.length
-                ? this.pipes[0].y + this._pipeH + this._pipeGap / 2
+            nextPipeX: activePipe ? activePipe.x : null,
+            gapCenterY: activePipe
+                ? activePipe.y + this._pipeH + this._pipeGap / 2
                 : null,
         };
 
@@ -226,13 +227,13 @@ export class FlappyEnv {
      * @returns {number[]} [dx, dy, vy]
      */
     getState() {
-        if (!this.pipes.length) {
+        const p = this._getActivePipe();
+        if (!p) {
             // No pipe visible → target vertical center of playable area
             const midY = this._groundY / 2;
             return [this._canvasW - CONFIG.bird.startX, midY - this.birdY, this.birdVy];
         }
 
-        const p = this.pipes[0];
         const birdX = CONFIG.bird.startX;
         const dx = p.x - birdX;
         const gapCenterY = p.y + this._pipeH + this._pipeGap / 2;
@@ -293,5 +294,24 @@ export class FlappyEnv {
             x: this._canvasW,
             y: this._yOffsetBase * factor,
         });
+    }
+
+    /**
+     * Determines which pipe the agent should be looking at.
+     * If the first pipe has been completely passed horizontally but hasn't scrolled off-screen yet,
+     * this returns the second pipe.
+     * @returns {object|null}
+     */
+    _getActivePipe() {
+        if (this.pipes.length === 0) return null;
+        
+        const p = this.pipes[0];
+        const birdX = CONFIG.bird.startX;
+        const passedPipe = (birdX - this._birdR >= p.x + this._pipeW);
+
+        if (passedPipe && this.pipes.length > 1) {
+            return this.pipes[1];
+        }
+        return p;
     }
 }

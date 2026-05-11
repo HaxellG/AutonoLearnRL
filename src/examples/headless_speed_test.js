@@ -10,7 +10,7 @@ import { FlappyEnv } from '../env/FlappyEnv.js';
 import { SimulationRunner } from '../SimulationRunner.js';
 
 const NUM_EPISODES = 200;
-const SEED = 42;
+const SEED = 0;
 
 // ── Random policy (flap ~30% of the time) ────────────────
 let rngState = 12345;

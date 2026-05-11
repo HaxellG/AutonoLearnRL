@@ -8,6 +8,7 @@
     <title>AutonoLearn RL — Flappy Bird</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css?family=Squada+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
 </head>
@@ -16,16 +17,25 @@
     <div id="app-wrapper">
         <!-- Izquierda: Juego -->
         <div id="game-container">
-            <div id="mode-selector" style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
-                <label for="agent-select" style="color: white; font-family: 'Squada One', sans-serif;">Mode:</label>
-                <select id="agent-select" style="padding: 5px; border-radius: 5px; font-family: sans-serif;">
-                    <option value="human">Human (Manual)</option>
-                    <option value="qlearning">Q-Learning Agent (Baseline)</option>
-                    <option value="dqn">DQN Agent (Neural Net)</option>
-                    <option value="benchmark">Comparar Modelos Locales (Benchmark)</option>
-                </select>
+            <div id="mode-selector">
+                <span class="mode-header">SELECT MODE</span>
+                <div class="mode-row">
+                    <button class="mode-btn active" data-mode="human">MANUAL</button>
+                    <button class="mode-btn mode-btn--locked" data-mode="battle" disabled>
+                        BATTLE
+                        <span class="mode-badge">SOON</span>
+                    </button>
+                </div>
+                <div class="mode-divider"></div>
+                <div class="mode-row">
+                    <button class="mode-btn" data-mode="qlearning">Q-LEARN</button>
+                    <button class="mode-btn" data-mode="dqn">DQN</button>
+                    <button class="mode-btn" data-mode="ddqn">DDQN</button>
+                </div>
             </div>
-            <canvas id="canvas" width="276" height="414"></canvas>
+            <div id="canvas-frame">
+                <canvas id="canvas" width="276" height="414"></canvas>
+            </div>
             <div id="speed-controls">
                 <span class="speed-label">Speed:</span>
                 <button class="speed-btn active" data-speed="1">1×</button>
@@ -39,29 +49,41 @@
 
         <!-- Derecha: Dashboard -->
         <div id="dashboard" class="hidden">
-            <div class="dash-cards">
-                <div class="card">
-                    <span class="card-title">Episode</span>
-                    <span id="lb-episode" class="card-value">0</span>
-                </div>
-                <div class="card">
-                    <span class="card-title">Current ε</span>
-                    <span id="lb-epsilon" class="card-value">1.000</span>
-                </div>
-                <div class="card">
-                    <span class="card-title">Max Score</span>
-                    <span id="lb-maxscore" class="card-value">0</span>
-                </div>
-                <div class="card">
-                    <span class="card-title">States</span>
-                    <span id="lb-states" class="card-value">0</span>
+            <!-- Metrics panel -->
+            <div class="arcade-panel">
+                <span class="arcade-panel-title">STATS</span>
+                <div class="dash-cards">
+                    <div class="card">
+                        <span class="card-title">EPISODE</span>
+                        <span id="lb-episode" class="card-value">0</span>
+                    </div>
+                    <div class="card">
+                        <span class="card-title">EPSILON</span>
+                        <span id="lb-epsilon" class="card-value">1.000</span>
+                    </div>
+                    <div class="card">
+                        <span class="card-title">MAX SCORE</span>
+                        <span id="lb-maxscore" class="card-value">0</span>
+                    </div>
+                    <div class="card">
+                        <span class="card-title">AVG SCORE</span>
+                        <span id="lb-avgscore" class="card-value">0</span>
+                    </div>
                 </div>
             </div>
-            <div class="chart-container">
-                <canvas id="chart-reward"></canvas>
+            <!-- Reward chart -->
+            <div class="arcade-panel">
+                <span class="arcade-panel-title">REWARD vs EPISODE</span>
+                <div class="chart-container">
+                    <canvas id="chart-reward"></canvas>
+                </div>
             </div>
-            <div class="chart-container">
-                <canvas id="chart-score"></canvas>
+            <!-- Score chart -->
+            <div class="arcade-panel">
+                <span class="arcade-panel-title">SCORE vs EPISODE</span>
+                <div class="chart-container">
+                    <canvas id="chart-score"></canvas>
+                </div>
             </div>
         </div>
         <!-- Benchmark UI (Hidden by default) -->

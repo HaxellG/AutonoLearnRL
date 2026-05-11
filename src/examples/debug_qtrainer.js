@@ -4,7 +4,7 @@ import { QLearningAgent } from '../agents/QLearningAgent.js';
 const env = new FlappyEnv();
 const agent = new QLearningAgent();
 
-let state = env.reset(42);
+let state = env.reset(0);
 console.log("Initial state:", state, "Discrete:", agent._discretizer.discretize(state).key);
 
 for (let i = 0; i < 20; i++) {
