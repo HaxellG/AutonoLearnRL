@@ -24,7 +24,7 @@ export const CONFIG = {
 
     // ── Pipes ───────────────────────────────────────────────
     pipe: {
-        gap: 150,               // Reverted to v11 for direct comparison
+        gap: 125,               // 125 is Normal, 100 is Hard
         spawnInterval: 100,     // spawn a new pipe every N frames
         // y offset range: y = -210 * clamp(random()+1, 1, 1.8)
         yOffsetBase: -210,
@@ -36,6 +36,7 @@ export const CONFIG = {
     game: {
         dx: 2,                  // horizontal scroll speed (pixels/frame)
         frameInterval: 20,      // ms between frames (~50 FPS)
+        seedMode: 'fixed',      // 'fixed' (always 0) or 'random'
     },
 
     // ── Sprite dimensions (measured from PNGs) ──────────────

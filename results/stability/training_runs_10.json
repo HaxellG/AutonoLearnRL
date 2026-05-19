@@ -1,0 +1,72 @@
+[
+  {
+    "mean": 42.75,
+    "max": 316,
+    "min": 1,
+    "stdDev": 45.27,
+    "median": 31.5
+  },
+  {
+    "mean": 42.01,
+    "max": 249,
+    "min": 1,
+    "stdDev": 41.84,
+    "median": 28.5
+  },
+  {
+    "mean": 49.6,
+    "max": 288,
+    "min": 2,
+    "stdDev": 45.96,
+    "median": 34
+  },
+  {
+    "mean": 28.98,
+    "max": 227,
+    "min": 1,
+    "stdDev": 31.51,
+    "median": 20.5
+  },
+  {
+    "mean": 40.91,
+    "max": 184,
+    "min": 1,
+    "stdDev": 39.13,
+    "median": 29
+  },
+  {
+    "mean": 35.81,
+    "max": 337,
+    "min": 1,
+    "stdDev": 39.42,
+    "median": 25
+  },
+  {
+    "mean": 31.93,
+    "max": 148,
+    "min": 1,
+    "stdDev": 30.63,
+    "median": 24.5
+  },
+  {
+    "mean": 58.23,
+    "max": 298,
+    "min": 1,
+    "stdDev": 58.78,
+    "median": 35
+  },
+  {
+    "mean": 52.56,
+    "max": 286,
+    "min": 1,
+    "stdDev": 55.12,
+    "median": 34
+  },
+  {
+    "mean": 42.48,
+    "max": 263,
+    "min": 1,
+    "stdDev": 45.02,
+    "median": 29.5
+  }
+]

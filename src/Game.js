@@ -246,7 +246,8 @@ export class Game {
         switch (this._state) {
             case GameState.getReady:
                 this._state = GameState.play;
-                this._env.reset();
+                const seed = CONFIG.game.seedMode === 'random' ? Math.floor(Math.random() * 10000) : 0;
+                this._env.reset(seed);
                 this._sfx.start.play();
                 break;
             case GameState.play:

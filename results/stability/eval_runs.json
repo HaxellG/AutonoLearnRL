@@ -1,0 +1,71 @@
+{
+  "runs": [
+    {
+      "seed": 1000,
+      "score": 4
+    },
+    {
+      "seed": 1001,
+      "score": 25
+    },
+    {
+      "seed": 1002,
+      "score": 42
+    },
+    {
+      "seed": 1003,
+      "score": 9
+    },
+    {
+      "seed": 1004,
+      "score": 89
+    },
+    {
+      "seed": 1005,
+      "score": 53
+    },
+    {
+      "seed": 1006,
+      "score": 16
+    },
+    {
+      "seed": 1007,
+      "score": 25
+    },
+    {
+      "seed": 1008,
+      "score": 26
+    },
+    {
+      "seed": 1009,
+      "score": 76
+    },
+    {
+      "seed": 1010,
+      "score": 12
+    },
+    {
+      "seed": 1011,
+      "score": 60
+    },
+    {
+      "seed": 1012,
+      "score": 95
+    },
+    {
+      "seed": 1013,
+      "score": 4
+    },
+    {
+      "seed": 1014,
+      "score": 10
+    }
+  ],
+  "stats": {
+    "mean": 36.4,
+    "max": 95,
+    "min": 4,
+    "stdDev": 30.07,
+    "median": 25
+  }
+}

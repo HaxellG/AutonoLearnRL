@@ -1,4 +1,5 @@
 import { Game } from './Game.js';
+import { BattleMode } from './BattleMode.js';
 import { SimulationRunner } from './SimulationRunner.js';
 import { FlappyEnv } from './env/FlappyEnv.js';
 import { QLearningAgent } from './agents/QLearningAgent.js';
@@ -6,17 +7,23 @@ import { DQNAgent } from './agents/DQNAgent.js';
 import { DoubleDQNAgent } from './agents/DoubleDQNAgent.js';
 import { Telemetry } from './utils/Telemetry.js';
 import { Dashboard } from './ui/Dashboard.js';
+import { Leaderboard } from './ui/Leaderboard.js';
 import { Evaluator } from './utils/Evaluator.js';
+import { CONFIG } from './config.js';
 
 // ── UI Elements ──────────────────────────────────────────
 const canvas = document.getElementById('canvas');
-const modeBtns = document.querySelectorAll('#mode-selector .mode-btn');
+const modeBtns = document.querySelectorAll('#mode-selector [data-mode]');
+const diffBtns = document.querySelectorAll('#diff-selector-panel [data-diff]');
+const seedBtns = document.querySelectorAll('#diff-selector-panel [data-seed]');
 const speedBtns = document.querySelectorAll('.speed-btn');
 const speedControls = document.getElementById('speed-controls');
+const leaderboardBtn = document.getElementById('leaderboard-btn');
 
 // ── Global State ─────────────────────────────────────────
 let humanGame = null;
 let aiRunner = null;
+let battleMode = null;
 let env = null;
 let agent = null;
 let telemetry = null;
@@ -24,6 +31,10 @@ let dashboard = null;
 
 // Initialize Human Mode by default
 startHumanMode();
+
+// ── Leaderboard ──────────────────────────────────────────
+const leaderboard = new Leaderboard();
+leaderboardBtn.addEventListener('click', () => leaderboard.open());
 
 // ── Mode Switcher ────────────────────────────────────────
 modeBtns.forEach((btn) => {
@@ -38,11 +49,50 @@ modeBtns.forEach((btn) => {
         stopCurrentModes();
         if (mode === 'human') {
             startHumanMode();
-        } else if (mode === 'battle') {
-            // Future implementation
-            startBenchmarkMode();
+        } else if (mode === 'battle' || mode === 'vs') {
+            startBattleMode(mode);
         } else {
             startAIMode(mode);
+        }
+    });
+});
+
+// ── Difficulty Switcher ──────────────────────────────────
+diffBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        const diff = btn.dataset.diff;
+        
+        diffBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        if (diff === 'normal') {
+            CONFIG.pipe.gap = 125;
+        } else if (diff === 'hard') {
+            CONFIG.pipe.gap = 100;
+        }
+
+        // Restart current mode to apply new difficulty
+        const activeModeBtn = document.querySelector('#mode-selector [data-mode].active');
+        if (activeModeBtn) {
+            activeModeBtn.click();
+        }
+    });
+});
+
+// ── Seed Mode Switcher ───────────────────────────────────
+seedBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        const seedMode = btn.dataset.seed;
+        
+        seedBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        CONFIG.game.seedMode = seedMode;
+
+        // Restart current mode to apply new seed mode
+        const activeModeBtn = document.querySelector('#mode-selector [data-mode].active');
+        if (activeModeBtn) {
+            activeModeBtn.click();
         }
     });
 });
@@ -50,6 +100,7 @@ modeBtns.forEach((btn) => {
 // ── Speed Controls ───────────────────────────────────────
 speedBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
+        if (btn.disabled) return;
         const speed = parseInt(btn.dataset.speed, 10);
 
         if (humanGame) humanGame.setSpeed(speed);
@@ -74,41 +125,79 @@ function stopCurrentModes() {
     if (dashboard) {
         dashboard.hide();
     }
+    if (battleMode) {
+        battleMode.stop();
+        battleMode = null;
+    }
+    document.getElementById('ai-indicators').style.display = 'none';
     document.getElementById('benchmark-dashboard').classList.add('hidden');
     document.getElementById('canvas-frame').style.display = 'inline-block';
+    document.getElementById('battle-status').textContent = '';
 }
 
 function startHumanMode() {
     if (speedControls) speedControls.style.display = 'none';
     humanGame = new Game(canvas);
 
-    // Maintain speed selection
-    const activeSpeed = document.querySelector('.speed-btn.active');
-    if (activeSpeed) humanGame.setSpeed(parseInt(activeSpeed.dataset.speed, 10));
+    // Force 1x speed for manual mode
+    speedBtns.forEach((b) => b.classList.remove('active'));
+    const speed1Btn = document.querySelector('.speed-btn[data-speed="1"]');
+    if (speed1Btn) speed1Btn.classList.add('active');
+    
+    humanGame.setSpeed(1);
 
     humanGame.start();
 }
 
 function startAIMode(agentType) {
     if (speedControls) speedControls.style.display = 'flex';
+    
+    // Disable 5000x for DQN/DDQN (performance limitation)
+    const speed5000Btn = document.querySelector('.speed-btn[data-speed="5000"]');
+    if (speed5000Btn) {
+        if (agentType === 'dqn' || agentType === 'ddqn') {
+            speed5000Btn.disabled = true;
+            speed5000Btn.style.opacity = '0.4';
+            speed5000Btn.style.cursor = 'not-allowed';
+            if (speed5000Btn.classList.contains('active')) {
+                speed5000Btn.classList.remove('active');
+                const speed100Btn = document.querySelector('.speed-btn[data-speed="100"]');
+                if (speed100Btn) speed100Btn.classList.add('active');
+            }
+        } else {
+            speed5000Btn.disabled = false;
+            speed5000Btn.style.opacity = '';
+            speed5000Btn.style.cursor = '';
+        }
+    }
+
     // 1. Initialize RL components
     env = new FlappyEnv();
 
+    let maxEpisodes = 20000;
+
     if (agentType === 'dqn') {
         agent = new DQNAgent();
+        agent.epsilonDecay = Math.pow(agent.epsilonMin / agent.epsilon, 1 / (maxEpisodes * 0.8));
     } else if (agentType === 'ddqn') {
+        maxEpisodes = 30000;
         agent = new DoubleDQNAgent();
+        agent.epsilonDecay = Math.pow(agent.epsilonMin / agent.epsilon, 1 / (maxEpisodes * 0.8));
     } else {
         agent = new QLearningAgent();
+        agent.epsilonDecay = Math.pow(agent.epsilonEnd / agent.epsilon, 1 / (maxEpisodes * 0.8));
     }
 
     // Smooth moving average: Q-Learning is noisy (100 window), neural nets are smoother (50 window)
     telemetry = new Telemetry(agentType === 'qlearning' ? 100 : 50);
     dashboard = new Dashboard(telemetry);
     dashboard.show();
+    document.getElementById('ai-indicators').style.display = 'flex';
 
     // 2. We use Game as a pure renderer for the AI
-    const renderer = new Game(canvas);
+    // Assign to humanGame so stopCurrentModes() will stop its internal loop if mode switches
+    humanGame = new Game(canvas);
+    const renderer = humanGame;
 
     // 3. Runner orchestrates training + rendering
     let lastState = null;
@@ -121,7 +210,38 @@ function startAIMode(agentType) {
             lastAction = action;
             return action;
         },
-        renderer: (e) => renderer.renderEnv(e),
+        renderer: (e) => {
+            renderer.renderEnv(e);
+            
+            const activeSpeedBtn = document.querySelector('.speed-btn.active');
+            const activeSpeed = activeSpeedBtn ? parseInt(activeSpeedBtn.dataset.speed, 10) : 1;
+            const indicatorsPanel = document.getElementById('ai-indicators');
+            
+            if (activeSpeed !== 1) {
+                indicatorsPanel.style.opacity = '0.4';
+                document.getElementById('ind-jump').classList.remove('active');
+                document.getElementById('ind-nojump').classList.remove('active');
+                return;
+            } else {
+                indicatorsPanel.style.opacity = '1';
+            }
+
+            if (lastAction === 1) {
+                document.getElementById('ind-jump').classList.add('active');
+                document.getElementById('ind-nojump').classList.remove('active');
+                
+                clearTimeout(window.jumpTimeout);
+                window.jumpTimeoutIsActive = true;
+                window.jumpTimeout = setTimeout(() => {
+                    window.jumpTimeoutIsActive = false;
+                    document.getElementById('ind-jump').classList.remove('active');
+                    document.getElementById('ind-nojump').classList.add('active');
+                }, 500);
+            } else if (!window.jumpTimeoutIsActive) {
+                document.getElementById('ind-jump').classList.remove('active');
+                document.getElementById('ind-nojump').classList.add('active');
+            }
+        },
         onStep: (result) => {
             // TD Update during play!
             agent.learn(lastState, lastAction, result.reward, result.state, result.done);
@@ -133,10 +253,10 @@ function startAIMode(agentType) {
             // Update UI
             dashboard.update();
 
-            // Stop training at 50,000 episodes
-            if (telemetry.episodes >= 50000) {
+            // Stop training at maxEpisodes
+            if (telemetry.episodes >= maxEpisodes) {
                 aiRunner.stop();
-                console.log("Training complete (50k episodes reached).");
+                console.log(`Training complete (${maxEpisodes} episodes reached).`);
             }
         }
     });
@@ -145,86 +265,74 @@ function startAIMode(agentType) {
     const activeSpeed = document.querySelector('.speed-btn.active');
     if (activeSpeed) aiRunner.setStepsPerFrame(parseInt(activeSpeed.dataset.speed, 10));
 
-    // Force first render frame to GameState.play so "Get Ready" never flashes
-    renderer.renderEnv(env);
+    // Wait for user to click to start, using Game's native Get Ready state
+    renderer.start();
 
-    // Let's use incrementing seeds so it experiences different pipes
-    let seedCount = 0;
-    aiRunner._onReset = () => { env.seed = seedCount++; };
-    aiRunner.startVisual(seedCount++);
+    const checkStart = () => {
+        // If mode switched while waiting, abort
+        if (humanGame !== renderer) return;
+
+        if (renderer._getState() === 1) { // GameState.play
+            // User clicked! Stop the manual loop and start the AI loop
+            renderer.stop();
+            
+            let seedCount = 0;
+            aiRunner._onReset = () => {
+                if (CONFIG.game.seedMode === 'random') {
+                    env.seed = Math.floor(Math.random() * 10000);
+                } else {
+                    env.seed = 0; // Fixed EVAL_SEED
+                }
+            };
+            const initialSeed = CONFIG.game.seedMode === 'random' ? Math.floor(Math.random() * 10000) : 0;
+            aiRunner.startVisual(initialSeed);
+        } else {
+            requestAnimationFrame(checkStart);
+        }
+    };
+    checkStart();
 }
 
-async function startBenchmarkMode() {
-    // Hide game canvas since it will run headless in browser
-    document.getElementById('canvas-frame').style.display = 'none';
-    const bDash = document.getElementById('benchmark-dashboard');
-    bDash.classList.remove('hidden');
-    
-    document.getElementById('bm-agent-name').innerText = 'Cargando modelos desde /models/...';
-    document.getElementById('bm-progress-bar').style.width = '0%';
-    document.getElementById('bm-table-body').innerHTML = '';
-    document.getElementById('bm-conclusion').innerText = '';
+async function startBattleMode(mode) {
+    if (speedControls) speedControls.style.display = 'none';
 
-    try {
-        const qAgent = new QLearningAgent();
-        const dqnAgent = new DQNAgent();
+    battleMode = new BattleMode(canvas, mode);
+    battleMode.onBattleEnd((results) => {
+        showBattleResults(results, mode);
+    });
+    await battleMode.start();
+}
 
-        // 1. Load models explicitly
-        const qReq = await fetch('./models/qlearning.json');
-        if (!qReq.ok) throw new Error("Q-Learning no encontrado. Corre 'node src/examples/benchmark_agents.js' primero");
-        const qData = await qReq.json();
-        qAgent.load(qData);
+function showBattleResults(results, mode) {
+    const overlay = document.getElementById('battle-results-overlay');
+    const podium = document.getElementById('battle-podium');
+    const medals = ['🥇', '🥈', '🥉'];
 
-        await dqnAgent.load('./models/dqn/model.json'); // Fetches implicitly
+    podium.innerHTML = '';
+    results.forEach((r, i) => {
+        const row = document.createElement('div');
+        row.className = 'podium-row' + (i === 0 ? ' gold' : '');
+        row.innerHTML = `
+            <span class="podium-rank">${medals[i] || (i+1)}</span>
+            <span class="podium-name" style="color:${r.color}">${r.name}</span>
+            <span class="podium-score">SCORE: ${r.score}</span>
+        `;
+        podium.appendChild(row);
+    });
 
-        const agents = [
-            { name: 'Q-Learning', agent: qAgent },
-            { name: 'DQN (TF.js)', agent: dqnAgent }
-        ];
+    overlay.classList.add('open');
 
-        // 2. Start Evaluator
-        const env = new FlappyEnv();
-        const evaluator = new Evaluator(env, agents);
+    // Close button
+    document.getElementById('battle-results-close').onclick = () => {
+        overlay.classList.remove('open');
+    };
 
-        const results = await evaluator.evaluateAllAsync({ episodes: 200, startSeed: 0 }, (agentName, progress, stats) => {
-            document.getElementById('bm-agent-name').innerText = `Evaluando: ${agentName}`;
-            document.getElementById('bm-progress-bar').style.width = `${Math.floor(progress * 100)}%`;
-            document.getElementById('bm-stats').innerText = `Avg: ${stats.avgScore} | Max: ${stats.maxScore}`;
-        });
-
-        // 3. Render Results
-        document.getElementById('bm-agent-name').innerText = 'Benchmark Finalizado';
-        document.getElementById('bm-progress-bar').style.width = '100%';
-        document.getElementById('bm-stats').innerText = '';
-
-        const tBody = document.getElementById('bm-table-body');
-        tBody.innerHTML = '';
-        for (const [agentName, metrics] of Object.entries(results)) {
-            tBody.innerHTML += `
-                <tr style="border-bottom: 1px solid #3d3d5c;">
-                    <td style="padding: 5px;">${agentName}</td>
-                    <td style="padding: 5px;">${metrics.avgScore}</td>
-                    <td style="padding: 5px;">${metrics.maxScore}</td>
-                    <td style="padding: 5px;">${metrics.stdDev}</td>
-                </tr>
-            `;
-        }
-
-        const qAvg = results['Q-Learning'].avgScore;
-        const dAvg = results['DQN (TF.js)'].avgScore;
-
-        if (qAvg > dAvg) {
-            document.getElementById('bm-conclusion').innerText = `✅ Q-Learning rinde mejor por +${(qAvg - dAvg).toFixed(2)} Avg Score`;
-        } else if (dAvg > qAvg) {
-            document.getElementById('bm-conclusion').innerText = `✅ DQN rinde mejor por +${(dAvg - qAvg).toFixed(2)} Avg Score`;
-        } else {
-            document.getElementById('bm-conclusion').innerText = `🤝 Empate Estadístico`;
-        }
-
-    } catch(err) {
-        document.getElementById('bm-agent-name').innerText = 'Error al ejecutar benchmark';
-        document.getElementById('bm-stats').innerText = err.message;
-        console.error("Benchmark UI Error:", err);
-    }
+    // Rematch button
+    document.getElementById('battle-replay-btn').onclick = () => {
+        overlay.classList.remove('open');
+        // Restart battle
+        const battleBtn = document.querySelector(`#mode-selector [data-mode="${mode}"]`);
+        if (battleBtn) battleBtn.click();
+    };
 }
 

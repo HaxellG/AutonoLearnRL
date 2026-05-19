@@ -124,6 +124,32 @@ body {
   text-shadow: 0 0 6px rgba(115, 191, 46, 0.3);
 }
 
+/* AI Action Indicators */
+.indicator-btn {
+  background: #2d1a08;
+  color: #6b4820;
+  border: 2px solid #6b4820;
+  padding: 10px 4px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  text-align: center;
+  box-shadow:
+    inset 1px 1px 0 0 #a07028,
+    inset -1px -1px 0 0 #0e0702;
+  transition: all 0.1s ease;
+}
+
+.indicator-btn.active {
+  background: #73bf2e;
+  color: #0a2200;
+  border-color: #8ed44a;
+  box-shadow:
+    inset 1px 1px 0 0 #a0e858,
+    inset -1px -1px 0 0 #4a8018,
+    0 0 10px rgba(115, 191, 46, 0.4);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
 /* Chart containers */
 .chart-container {
   background: #2d1a08;
@@ -236,7 +262,7 @@ body {
   margin: 2px 0;
 }
 
-#mode-selector .mode-btn {
+.mode-btn {
   flex: 1;
   display: flex;
   align-items: center;
@@ -260,14 +286,14 @@ body {
   transition: background 0.1s, color 0.1s, border-color 0.1s;
 }
 
-#mode-selector .mode-btn:hover:not(:disabled) {
+.mode-btn:hover:not(:disabled) {
   background: #3a2210;
   color: #e8c870;
   border-color: #c8943c;
 }
 
 /* Pressed-in effect */
-#mode-selector .mode-btn:active:not(:disabled) {
+.mode-btn:active:not(:disabled) {
   box-shadow:
     inset -1px -1px 0 0 #a07028,
     inset 1px 1px 0 0 #0e0702;
@@ -275,7 +301,7 @@ body {
 }
 
 /* Active mode: Flappy Bird pipe green */
-#mode-selector .mode-btn.active {
+.mode-btn.active {
   background: #73bf2e;
   color: #0a2200;
   border-color: #8ed44a;
@@ -286,8 +312,20 @@ body {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
+/* Active mode (Hard): Red theme */
+.mode-btn[data-diff="hard"].active {
+  background: #e74c3c;
+  color: #3b0a0a;
+  border-color: #ff7666;
+  box-shadow:
+    inset 1px 1px 0 0 #ffa399,
+    inset -1px -1px 0 0 #962a20,
+    0 0 10px rgba(231, 76, 60, 0.25);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
 /* Locked / coming-soon */
-#mode-selector .mode-btn--locked {
+.mode-btn--locked {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -362,4 +400,438 @@ body {
   box-shadow:
     inset 1px 1px 0 0 #a0e858,
     inset -1px -1px 0 0 #4a8018;
+}
+
+/* ── Difficulty Selector Panel (fixed top-left) ────────── */
+#diff-selector-panel {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 900;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #1c0e04;
+  border: 3px solid #e8c870;
+  outline: 3px solid #3a2210;
+  box-shadow:
+    inset 0 0 0 2px #3a2210,
+    0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+#diff-selector-panel .mode-btn {
+  width: 50%;
+}
+
+/* ── Leaderboard Button (fixed top-right) ──────────────── */
+#leaderboard-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  /* NES arcade style */
+  background: #1c0e04;
+  border: 3px solid #e8c870;
+  outline: 3px solid #3a2210;
+  box-shadow:
+    inset 0 0 0 2px #3a2210,
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(232, 200, 112, 0.0);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #e8c870;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+}
+
+#leaderboard-btn:hover {
+  background: #2d1a08;
+  border-color: #f0d890;
+  box-shadow:
+    inset 0 0 0 2px #3a2210,
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(232, 200, 112, 0.25);
+  transform: translateY(-1px);
+}
+
+#leaderboard-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 0 0 2px #3a2210,
+    0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.lb-btn-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.lb-btn-text {
+  color: #c8943c;
+}
+
+/* ── Leaderboard Overlay ───────────────────────────────── */
+#leaderboard-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 5, 0, 0);
+  backdrop-filter: blur(0px);
+  pointer-events: none;
+  transition: background 0.35s ease, backdrop-filter 0.35s ease;
+}
+
+#leaderboard-overlay.visible {
+  background: rgba(10, 5, 0, 0.75);
+  backdrop-filter: blur(6px);
+  pointer-events: all;
+}
+
+/* ── Leaderboard Panel ─────────────────────────────────── */
+.leaderboard-panel {
+  width: 90%;
+  max-width: 820px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  /* NES arcade panel */
+  background: #1c0e04;
+  border: 3px solid #e8c870;
+  outline: 3px solid #3a2210;
+  box-shadow:
+    inset 0 0 0 2px #3a2210,
+    0 8px 40px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(232, 200, 112, 0.08);
+  /* Transition: slide up + fade in */
+  opacity: 0;
+  transform: translateY(30px) scale(0.97);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.leaderboard-panel.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Header ────────────────────────────────────────────── */
+.lb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 2px solid #3a2210;
+}
+
+.lb-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 20px;
+  color: #e8c870;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(232, 200, 112, 0.3);
+}
+
+.lb-close-btn {
+  background: #2d1a08;
+  border: 2px solid #6b4820;
+  color: #c8943c;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow:
+    inset 1px 1px 0 0 #a07028,
+    inset -1px -1px 0 0 #0e0702;
+}
+
+.lb-close-btn:hover {
+  background: #3a2210;
+  color: #e8c870;
+  border-color: #c8943c;
+}
+
+.lb-close-btn:active {
+  box-shadow:
+    inset -1px -1px 0 0 #a07028,
+    inset 1px 1px 0 0 #0e0702;
+  transform: translateY(1px);
+}
+
+/* ── Difficulty Tabs ───────────────────────────────────── */
+.lb-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px 4px;
+  justify-content: center;
+}
+
+.lb-diff-btn {
+  flex: 0 1 auto;
+  padding: 12px 24px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  /* Arcade button style (matches mode-btn) */
+  background: #2d1a08;
+  color: #c8943c;
+  border: 2px solid #6b4820;
+  border-radius: 0;
+  box-shadow:
+    inset 1px 1px 0 0 #a07028,
+    inset -1px -1px 0 0 #0e0702;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+
+.lb-diff-btn:hover {
+  background: #3a2210;
+  color: #e8c870;
+  border-color: #c8943c;
+}
+
+.lb-diff-btn:active {
+  box-shadow:
+    inset -1px -1px 0 0 #a07028,
+    inset 1px 1px 0 0 #0e0702;
+  transform: translateY(1px);
+}
+
+.lb-diff-btn.active {
+  background: #73bf2e;
+  color: #0a2200;
+  border-color: #8ed44a;
+  box-shadow:
+    inset 1px 1px 0 0 #a0e858,
+    inset -1px -1px 0 0 #4a8018,
+    0 0 10px rgba(115, 191, 46, 0.25);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* ── Subtitle ──────────────────────────────────────────── */
+.lb-subtitle {
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #6b4820;
+  letter-spacing: 1.5px;
+  padding: 12px 16px 10px;
+}
+
+/* ── Table Container ───────────────────────────────────── */
+.lb-table-wrap {
+  overflow-x: auto;
+  overflow-y: auto;
+  padding: 6px 12px 14px;
+  flex: 1;
+}
+
+.lb-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+/* Table Header */
+.lb-th {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: #e8c870;
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 12px 10px;
+  border-bottom: 2px solid #6b4820;
+  background: #2d1a08;
+  white-space: nowrap;
+}
+
+.lb-th--highlight {
+  color: #73bf2e;
+  text-shadow: 0 0 6px rgba(115, 191, 46, 0.3);
+}
+
+/* Table Rows */
+.lb-row {
+  transition: background 0.15s ease;
+}
+
+.lb-row:hover {
+  background: rgba(107, 72, 32, 0.2);
+}
+
+/* Rank-specific row accents */
+.lb-rank-gold {
+  border-left: 3px solid #e8c870;
+}
+
+.lb-rank-silver {
+  border-left: 3px solid #a0a0a8;
+}
+
+.lb-rank-bronze {
+  border-left: 3px solid #cd7f32;
+}
+
+.lb-rank-gold .lb-cell--agent {
+  color: #e8c870;
+  text-shadow: 0 0 8px rgba(232, 200, 112, 0.4);
+}
+
+.lb-rank-silver .lb-cell--agent {
+  color: #c0c0c8;
+}
+
+.lb-rank-bronze .lb-cell--agent {
+  color: #cd7f32;
+}
+
+/* Table Cells */
+.lb-cell {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: #c8943c;
+  text-align: center;
+  padding: 16px 10px;
+  border-bottom: 1px solid #3a2210;
+  white-space: nowrap;
+}
+
+.lb-cell--rank {
+  font-size: 24px;
+  width: 60px;
+}
+
+.lb-cell--agent {
+  font-size: 14px;
+  text-align: left;
+  padding-left: 14px;
+  letter-spacing: 0.5px;
+}
+
+.lb-cell--highlight {
+  color: #73bf2e;
+  font-size: 16px;
+  text-shadow: 0 0 6px rgba(115, 191, 46, 0.3);
+}
+
+.lb-cell--small {
+  font-size: 10px;
+  color: #6b4820;
+}
+
+/* Loading state */
+.lb-loading {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #6b4820;
+  text-align: center;
+  padding: 30px 10px;
+  letter-spacing: 2px;
+  animation: lb-blink 1s step-end infinite;
+}
+
+@keyframes lb-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── Battle Results Overlay ──────────────────────────── */
+#battle-results-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 5, 0, 0);
+  backdrop-filter: blur(0px);
+  pointer-events: none;
+  transition: background 0.35s ease, backdrop-filter 0.35s ease;
+}
+
+#battle-results-overlay.open {
+  background: rgba(10, 5, 0, 0.75);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.battle-results-panel {
+  background:
+    linear-gradient(180deg, #2d1a08 0%, #1c0e04 60%, #0e0702 100%);
+  border: 3px solid #e8c870;
+  outline: 3px solid #3a2210;
+  box-shadow:
+    inset 0 0 0 2px #3a2210,
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    0 0 40px rgba(232, 200, 112, 0.1);
+  min-width: 340px;
+  max-width: 420px;
+  opacity: 0;
+  transform: scale(0.85) translateY(20px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#battle-results-overlay.open .battle-results-panel {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.battle-results-body {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Podium rows */
+.podium-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  border: 2px solid #6b4820;
+  background: #2d1a08;
+  box-shadow:
+    inset 1px 1px 0 0 #a07028,
+    inset -1px -1px 0 0 #0e0702;
+}
+
+.podium-row.gold {
+  border-color: #e8c870;
+  background: #3a2210;
+  box-shadow:
+    inset 1px 1px 0 0 #e8c870,
+    inset -1px -1px 0 0 #1c0e04,
+    0 0 12px rgba(232, 200, 112, 0.2);
+}
+
+.podium-rank {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.podium-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  flex: 1;
+}
+
+.podium-score {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #73bf2e;
+  text-shadow: 0 0 4px rgba(115, 191, 46, 0.3);
 }

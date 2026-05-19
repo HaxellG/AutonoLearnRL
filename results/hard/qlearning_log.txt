@@ -1,0 +1,48 @@
+
+════════════════════════════════════════════════════════════
+  AutonoLearn RL — Q-Learning Training
+  Episodes: 20000 | Gap: 100
+  Timestamp: 2026-05-14T15-21-24-803Z
+════════════════════════════════════════════════════════════
+  Ep 200/20000 | Avg(200): 0.03 | Max: 1 | ε: 0.9441 | Q-States: 426  Ep 400/20000 | Avg(200): 0.03 | Max: 1 | ε: 0.8913 | Q-States: 472  Ep 600/20000 | Avg(200): 0.01 | Max: 1 | ε: 0.8414 | Q-States: 490  Ep 800/20000 | Avg(200): 0.02 | Max: 1 | ε: 0.7943 | Q-States: 510  Ep 1000/20000 | Avg(200): 0.04 | Max: 1 | ε: 0.7499 | Q-States: 528  Ep 1200/20000 | Avg(200): 0.04 | Max: 1 | ε: 0.7079 | Q-States: 544  Ep 1400/20000 | Avg(200): 0.04 | Max: 2 | ε: 0.6683 | Q-States: 550  Ep 1600/20000 | Avg(200): 0.09 | Max: 2 | ε: 0.6310 | Q-States: 553  Ep 1800/20000 | Avg(200): 0.12 | Max: 2 | ε: 0.5957 | Q-States: 557  Ep 2000/20000 | Avg(200): 0.09 | Max: 2 | ε: 0.5623 | Q-States: 558
+  [Checkpoint @ 2000] Eval(100 ep): Mean=1, Max=9, StdDev=1.36
+  🌟 Mejor modelo guardado (Mean: 1)
+  Ep 2200/20000 | Avg(200): 0.18 | Max: 2 | ε: 0.5309 | Q-States: 574  Ep 2400/20000 | Avg(200): 0.13 | Max: 2 | ε: 0.5012 | Q-States: 576  Ep 2600/20000 | Avg(200): 0.17 | Max: 5 | ε: 0.4732 | Q-States: 577  Ep 2800/20000 | Avg(200): 0.13 | Max: 3 | ε: 0.4467 | Q-States: 578  Ep 3000/20000 | Avg(200): 0.24 | Max: 2 | ε: 0.4217 | Q-States: 578  Ep 3200/20000 | Avg(200): 0.25 | Max: 4 | ε: 0.3981 | Q-States: 579  Ep 3400/20000 | Avg(200): 0.32 | Max: 5 | ε: 0.3758 | Q-States: 579  Ep 3600/20000 | Avg(200): 0.29 | Max: 4 | ε: 0.3548 | Q-States: 579  Ep 3800/20000 | Avg(200): 0.35 | Max: 3 | ε: 0.3350 | Q-States: 579  Ep 4000/20000 | Avg(200): 0.34 | Max: 3 | ε: 0.3162 | Q-States: 579
+  [Checkpoint @ 4000] Eval(100 ep): Mean=3.08, Max=12, StdDev=3
+  🌟 Mejor modelo guardado (Mean: 3.08)
+  Ep 4200/20000 | Avg(200): 0.41 | Max: 4 | ε: 0.2985 | Q-States: 579  Ep 4400/20000 | Avg(200): 0.61 | Max: 4 | ε: 0.2818 | Q-States: 579  Ep 4600/20000 | Avg(200): 0.69 | Max: 6 | ε: 0.2661 | Q-States: 579  Ep 4800/20000 | Avg(200): 0.45 | Max: 5 | ε: 0.2512 | Q-States: 579  Ep 5000/20000 | Avg(200): 0.74 | Max: 7 | ε: 0.2371 | Q-States: 579  Ep 5200/20000 | Avg(200): 0.63 | Max: 7 | ε: 0.2239 | Q-States: 579  Ep 5400/20000 | Avg(200): 0.72 | Max: 6 | ε: 0.2113 | Q-States: 579  Ep 5600/20000 | Avg(200): 0.79 | Max: 6 | ε: 0.1995 | Q-States: 579  Ep 5800/20000 | Avg(200): 0.8 | Max: 7 | ε: 0.1884 | Q-States: 579  Ep 6000/20000 | Avg(200): 0.98 | Max: 8 | ε: 0.1778 | Q-States: 579
+  [Checkpoint @ 6000] Eval(100 ep): Mean=4, Max=19, StdDev=3.49
+  🌟 Mejor modelo guardado (Mean: 4)
+  Ep 6200/20000 | Avg(200): 1.1 | Max: 8 | ε: 0.1679 | Q-States: 580  Ep 6400/20000 | Avg(200): 0.92 | Max: 7 | ε: 0.1585 | Q-States: 580  Ep 6600/20000 | Avg(200): 1.13 | Max: 10 | ε: 0.1496 | Q-States: 580  Ep 6800/20000 | Avg(200): 1.31 | Max: 9 | ε: 0.1413 | Q-States: 580  Ep 7000/20000 | Avg(200): 1.39 | Max: 10 | ε: 0.1334 | Q-States: 580  Ep 7200/20000 | Avg(200): 1.61 | Max: 9 | ε: 0.1259 | Q-States: 580  Ep 7400/20000 | Avg(200): 1.42 | Max: 9 | ε: 0.1189 | Q-States: 580  Ep 7600/20000 | Avg(200): 1.77 | Max: 11 | ε: 0.1122 | Q-States: 580  Ep 7800/20000 | Avg(200): 1.08 | Max: 8 | ε: 0.1059 | Q-States: 580  Ep 8000/20000 | Avg(200): 0.93 | Max: 5 | ε: 0.1000 | Q-States: 580
+  [Checkpoint @ 8000] Eval(100 ep): Mean=1.47, Max=10, StdDev=1.48
+  Ep 8200/20000 | Avg(200): 1.09 | Max: 9 | ε: 0.0944 | Q-States: 580  Ep 8400/20000 | Avg(200): 1.53 | Max: 11 | ε: 0.0891 | Q-States: 580  Ep 8600/20000 | Avg(200): 2.27 | Max: 13 | ε: 0.0841 | Q-States: 580  Ep 8800/20000 | Avg(200): 2.52 | Max: 13 | ε: 0.0794 | Q-States: 580  Ep 9000/20000 | Avg(200): 2.65 | Max: 14 | ε: 0.0750 | Q-States: 580  Ep 9200/20000 | Avg(200): 2.92 | Max: 19 | ε: 0.0708 | Q-States: 580  Ep 9400/20000 | Avg(200): 2.87 | Max: 18 | ε: 0.0668 | Q-States: 580  Ep 9600/20000 | Avg(200): 3.1 | Max: 20 | ε: 0.0631 | Q-States: 580  Ep 9800/20000 | Avg(200): 3 | Max: 14 | ε: 0.0596 | Q-States: 580  Ep 10000/20000 | Avg(200): 1 | Max: 7 | ε: 0.0562 | Q-States: 580
+  [Checkpoint @ 10000] Eval(100 ep): Mean=0.14, Max=4, StdDev=0.53
+  Ep 10200/20000 | Avg(200): 0.22 | Max: 4 | ε: 0.0531 | Q-States: 580  Ep 10400/20000 | Avg(200): 0.08 | Max: 2 | ε: 0.0501 | Q-States: 580  Ep 10600/20000 | Avg(200): 0.27 | Max: 3 | ε: 0.0473 | Q-States: 580  Ep 10800/20000 | Avg(200): 0.8 | Max: 8 | ε: 0.0447 | Q-States: 580  Ep 11000/20000 | Avg(200): 0.94 | Max: 8 | ε: 0.0422 | Q-States: 580  Ep 11200/20000 | Avg(200): 1.05 | Max: 9 | ε: 0.0398 | Q-States: 580  Ep 11400/20000 | Avg(200): 0.71 | Max: 8 | ε: 0.0376 | Q-States: 580  Ep 11600/20000 | Avg(200): 0.64 | Max: 7 | ε: 0.0355 | Q-States: 580  Ep 11800/20000 | Avg(200): 2.56 | Max: 23 | ε: 0.0335 | Q-States: 580  Ep 12000/20000 | Avg(200): 2.14 | Max: 19 | ε: 0.0316 | Q-States: 580
+  [Checkpoint @ 12000] Eval(100 ep): Mean=7.38, Max=75, StdDev=10.28
+  🌟 Mejor modelo guardado (Mean: 7.38)
+  Ep 12200/20000 | Avg(200): 3.08 | Max: 20 | ε: 0.0299 | Q-States: 580  Ep 12400/20000 | Avg(200): 4.11 | Max: 21 | ε: 0.0282 | Q-States: 580  Ep 12600/20000 | Avg(200): 4.32 | Max: 25 | ε: 0.0266 | Q-States: 580  Ep 12800/20000 | Avg(200): 4.45 | Max: 24 | ε: 0.0251 | Q-States: 580  Ep 13000/20000 | Avg(200): 6.41 | Max: 31 | ε: 0.0237 | Q-States: 580  Ep 13200/20000 | Avg(200): 7.43 | Max: 45 | ε: 0.0224 | Q-States: 580  Ep 13400/20000 | Avg(200): 5.8 | Max: 27 | ε: 0.0211 | Q-States: 580  Ep 13600/20000 | Avg(200): 6.42 | Max: 32 | ε: 0.0200 | Q-States: 580  Ep 13800/20000 | Avg(200): 4.76 | Max: 49 | ε: 0.0188 | Q-States: 580  Ep 14000/20000 | Avg(200): 2.52 | Max: 22 | ε: 0.0178 | Q-States: 580
+  [Checkpoint @ 14000] Eval(100 ep): Mean=2.21, Max=10, StdDev=1.69
+  Ep 14200/20000 | Avg(200): 2.4 | Max: 26 | ε: 0.0168 | Q-States: 580  Ep 14400/20000 | Avg(200): 2.82 | Max: 17 | ε: 0.0158 | Q-States: 580  Ep 14600/20000 | Avg(200): 2.9 | Max: 22 | ε: 0.0150 | Q-States: 580  Ep 14800/20000 | Avg(200): 4.13 | Max: 25 | ε: 0.0141 | Q-States: 580  Ep 15000/20000 | Avg(200): 6.75 | Max: 46 | ε: 0.0133 | Q-States: 580  Ep 15200/20000 | Avg(200): 6.57 | Max: 52 | ε: 0.0126 | Q-States: 580  Ep 15400/20000 | Avg(200): 5.79 | Max: 49 | ε: 0.0119 | Q-States: 580  Ep 15600/20000 | Avg(200): 5.41 | Max: 48 | ε: 0.0112 | Q-States: 580  Ep 15800/20000 | Avg(200): 5.5 | Max: 37 | ε: 0.0106 | Q-States: 580  Ep 16000/20000 | Avg(200): 4.83 | Max: 33 | ε: 0.0100 | Q-States: 580
+  [Checkpoint @ 16000] Eval(100 ep): Mean=7.64, Max=43, StdDev=8.84
+  🌟 Mejor modelo guardado (Mean: 7.64)
+  Ep 16200/20000 | Avg(200): 6.63 | Max: 38 | ε: 0.0100 | Q-States: 580  Ep 16400/20000 | Avg(200): 2.99 | Max: 25 | ε: 0.0100 | Q-States: 580  Ep 16600/20000 | Avg(200): 0.38 | Max: 7 | ε: 0.0100 | Q-States: 580  Ep 16800/20000 | Avg(200): 0.35 | Max: 4 | ε: 0.0100 | Q-States: 580  Ep 17000/20000 | Avg(200): 0.44 | Max: 6 | ε: 0.0100 | Q-States: 580  Ep 17200/20000 | Avg(200): 0.36 | Max: 4 | ε: 0.0100 | Q-States: 580  Ep 17400/20000 | Avg(200): 0.79 | Max: 6 | ε: 0.0100 | Q-States: 580  Ep 17600/20000 | Avg(200): 1.25 | Max: 6 | ε: 0.0100 | Q-States: 580  Ep 17800/20000 | Avg(200): 1.05 | Max: 6 | ε: 0.0100 | Q-States: 580  Ep 18000/20000 | Avg(200): 1.01 | Max: 5 | ε: 0.0100 | Q-States: 580
+  [Checkpoint @ 18000] Eval(100 ep): Mean=0.89, Max=6, StdDev=1.2
+  Ep 18200/20000 | Avg(200): 1.2 | Max: 6 | ε: 0.0100 | Q-States: 580  Ep 18400/20000 | Avg(200): 2.08 | Max: 21 | ε: 0.0100 | Q-States: 580  Ep 18600/20000 | Avg(200): 6.43 | Max: 54 | ε: 0.0100 | Q-States: 580  Ep 18800/20000 | Avg(200): 9.08 | Max: 49 | ε: 0.0100 | Q-States: 580  Ep 19000/20000 | Avg(200): 6.79 | Max: 65 | ε: 0.0100 | Q-States: 580  Ep 19200/20000 | Avg(200): 8.33 | Max: 63 | ε: 0.0100 | Q-States: 580  Ep 19400/20000 | Avg(200): 9.13 | Max: 68 | ε: 0.0100 | Q-States: 580  Ep 19600/20000 | Avg(200): 9.35 | Max: 57 | ε: 0.0100 | Q-States: 580  Ep 19800/20000 | Avg(200): 9.68 | Max: 81 | ε: 0.0100 | Q-States: 580  Ep 20000/20000 | Avg(200): 10.96 | Max: 62 | ε: 0.0100 | Q-States: 580
+  [Checkpoint @ 20000] Eval(100 ep): Mean=27.36, Max=120, StdDev=25.71
+  🌟 Mejor modelo guardado (Mean: 27.36)
+
+  Restaurando mejor modelo (Mean: 27.36)
+
+  Entrenamiento completo en 3.38s
+
+  Evaluación final (200 episodios greedy)...
+
+  🏆 Q-Learning Final:
+  ┌──────────┬──────────┬──────────┬──────────┬──────────┐
+  │   Mean   │   Max    │   Min    │  StdDev  │  Median  │
+  ├──────────┼──────────┼──────────┼──────────┼──────────┤
+  │    26.02 │      153 │        1 │    25.82 │     19.5 │
+  └──────────┴──────────┴──────────┴──────────┴──────────┘
+  💾 Modelo guardado en models_final/hard/qlearning.json
+  📊 Resultados guardados en results/qlearning_results.json
+

@@ -20,7 +20,8 @@ import * as tf from '@tensorflow/tfjs-node';
 globalThis.tf = tf;
 
 // ─── Logging (tee to file + terminal) ─────────────────────────
-const resultsDir = path.join(process.cwd(), 'results');
+const difficulty = CONFIG.pipe.gap >= 150 ? 'easy' : (CONFIG.pipe.gap >= 120 ? 'medium' : 'hard');
+const resultsDir = path.join(process.cwd(), 'results', difficulty);
 fs.mkdirSync(resultsDir, { recursive: true });
 const logStream = fs.createWriteStream(path.join(resultsDir, 'dqn_log.txt'), { flags: 'w' });
 const _origWrite = process.stdout.write.bind(process.stdout);
@@ -152,7 +153,7 @@ console.log(`  │ ${pad(finalStats.mean, 8)} │ ${pad(finalStats.max, 8)} │ 
 console.log(`  └──────────┴──────────┴──────────┴──────────┴──────────┘`);
 
 // ─── Save ─────────────────────────────────────────────────────
-const modelsDir  = path.join(process.cwd(), 'models_final');
+const modelsDir  = path.join(process.cwd(), 'models_final', difficulty);
 const dqnDir     = path.join(modelsDir, 'dqn');
 fs.mkdirSync(dqnDir,     { recursive: true });
 
@@ -170,7 +171,7 @@ await agent.save(tf.io.withSaveHandler(async (artifacts) => {
     }
     return { modelArtifactsInfo: { dateSaved: new Date(), modelTopologyType: 'JSON' } };
 }));
-console.log(`  💾 Modelo guardado en models_final/dqn/`);
+console.log(`  💾 Modelo guardado en models_final/${difficulty}/dqn/`);
 
 const resultData = {
     timestamp,

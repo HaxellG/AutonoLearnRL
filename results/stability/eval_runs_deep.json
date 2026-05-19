@@ -1,0 +1,144 @@
+{
+  "dqn": {
+    "runs": [
+      {
+        "seed": 1000,
+        "score": 4
+      },
+      {
+        "seed": 1001,
+        "score": 49
+      },
+      {
+        "seed": 1002,
+        "score": 56
+      },
+      {
+        "seed": 1003,
+        "score": 16
+      },
+      {
+        "seed": 1004,
+        "score": 98
+      },
+      {
+        "seed": 1005,
+        "score": 84
+      },
+      {
+        "seed": 1006,
+        "score": 30
+      },
+      {
+        "seed": 1007,
+        "score": 1
+      },
+      {
+        "seed": 1008,
+        "score": 20
+      },
+      {
+        "seed": 1009,
+        "score": 57
+      },
+      {
+        "seed": 1010,
+        "score": 39
+      },
+      {
+        "seed": 1011,
+        "score": 100
+      },
+      {
+        "seed": 1012,
+        "score": 109
+      },
+      {
+        "seed": 1013,
+        "score": 24
+      },
+      {
+        "seed": 1014,
+        "score": 30
+      }
+    ],
+    "stats": {
+      "mean": 47.8,
+      "max": 109,
+      "min": 1,
+      "stdDev": 34.28,
+      "median": 39
+    }
+  },
+  "ddqn": {
+    "runs": [
+      {
+        "seed": 1000,
+        "score": 46
+      },
+      {
+        "seed": 1001,
+        "score": 63
+      },
+      {
+        "seed": 1002,
+        "score": 144
+      },
+      {
+        "seed": 1003,
+        "score": 16
+      },
+      {
+        "seed": 1004,
+        "score": 99
+      },
+      {
+        "seed": 1005,
+        "score": 78
+      },
+      {
+        "seed": 1006,
+        "score": 35
+      },
+      {
+        "seed": 1007,
+        "score": 25
+      },
+      {
+        "seed": 1008,
+        "score": 26
+      },
+      {
+        "seed": 1009,
+        "score": 57
+      },
+      {
+        "seed": 1010,
+        "score": 39
+      },
+      {
+        "seed": 1011,
+        "score": 212
+      },
+      {
+        "seed": 1012,
+        "score": 9
+      },
+      {
+        "seed": 1013,
+        "score": 0
+      },
+      {
+        "seed": 1014,
+        "score": 30
+      }
+    ],
+    "stats": {
+      "mean": 58.6,
+      "max": 212,
+      "min": 0,
+      "stdDev": 54.57,
+      "median": 39
+    }
+  }
+}

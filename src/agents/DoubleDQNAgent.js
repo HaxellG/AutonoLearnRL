@@ -28,7 +28,7 @@ export class DoubleDQNAgent {
 
         this.learningRate = 0.001;
         this.batchSize = 64;
-        this.targetUpdateFreq = 5000; // v11 proven stable config
+        this.targetUpdateFreq = 10000; // Increased to prevent rapid forgetting
 
         this.actionSpace = 2;
         this.stateSize = 3;
@@ -38,7 +38,7 @@ export class DoubleDQNAgent {
         this.statesVisited = 0;
 
         // Modules
-        this.memory = new ReplayBuffer(10000);
+        this.memory = new ReplayBuffer(50000); // 5x larger to remember early game
 
         // Networks
         this.mainNet = this._buildModel();

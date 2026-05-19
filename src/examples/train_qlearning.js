@@ -16,7 +16,8 @@ import fs from 'fs';
 import path from 'path';
 
 // ─── Logging (tee to file + terminal) ─────────────────────────
-const resultsDir = path.join(process.cwd(), 'results');
+const difficulty = CONFIG.pipe.gap >= 150 ? 'easy' : (CONFIG.pipe.gap >= 120 ? 'medium' : 'hard');
+const resultsDir = path.join(process.cwd(), 'results', difficulty);
 fs.mkdirSync(resultsDir, { recursive: true });
 const logStream = fs.createWriteStream(path.join(resultsDir, 'qlearning_log.txt'), { flags: 'w' });
 const _origWrite = process.stdout.write.bind(process.stdout);
@@ -139,11 +140,11 @@ console.log(`  │ ${pad(finalStats.mean, 8)} │ ${pad(finalStats.max, 8)} │ 
 console.log(`  └──────────┴──────────┴──────────┴──────────┴──────────┘`);
 
 // ─── Save ─────────────────────────────────────────────────────
-const modelsDir  = path.join(process.cwd(), 'models_final');
+const modelsDir  = path.join(process.cwd(), 'models_final', difficulty);
 fs.mkdirSync(modelsDir,  { recursive: true });
 
 fs.writeFileSync(path.join(modelsDir, 'qlearning.json'), JSON.stringify(agent.save(), null, 2));
-console.log(`  💾 Modelo guardado en models_final/qlearning.json`);
+console.log(`  💾 Modelo guardado en models_final/${difficulty}/qlearning.json`);
 
 const resultData = {
     timestamp,

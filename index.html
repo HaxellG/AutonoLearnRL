@@ -14,6 +14,65 @@
 </head>
 
 <body>
+    <!-- Difficulty Selector (top-left fixed) -->
+    <div id="diff-selector-panel">
+        <span class="mode-header">DIFFICULTY</span>
+        <div class="mode-row">
+            <button class="mode-btn diff-btn active" data-diff="normal">NORMAL</button>
+            <button class="mode-btn diff-btn" data-diff="hard">HARD</button>
+        </div>
+        <div class="mode-divider"></div>
+        <span class="mode-header">WORLD SEED</span>
+        <div class="mode-row">
+            <button class="mode-btn seed-btn active" data-seed="fixed">FIXED</button>
+            <button class="mode-btn seed-btn" data-seed="random">RANDOM</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard Button (top-right fixed) -->
+    <button id="leaderboard-btn" title="Leaderboard">
+        <span class="lb-btn-icon">🏆</span>
+        <span class="lb-btn-text">RANKING</span>
+    </button>
+
+    <!-- Leaderboard Overlay -->
+    <div id="leaderboard-overlay">
+        <div class="leaderboard-panel">
+            <div class="lb-header">
+                <span class="lb-title">🏆 LEADERBOARD</span>
+                <button id="leaderboard-close" class="lb-close-btn">✕</button>
+            </div>
+
+            <!-- Difficulty Tabs -->
+            <div class="lb-tabs">
+                <button class="lb-diff-btn active" data-diff="medium">NORMAL</button>
+                <button class="lb-diff-btn" data-diff="hard">HARD</button>
+            </div>
+
+            <div class="lb-subtitle">RANKED BY MEAN SCORE · 200 EVAL EPISODES</div>
+
+            <!-- Results Table -->
+            <div class="lb-table-wrap">
+                <table class="lb-table">
+                    <thead>
+                        <tr>
+                            <th class="lb-th">#</th>
+                            <th class="lb-th">AGENT</th>
+                            <th class="lb-th lb-th--highlight">MEAN</th>
+                            <th class="lb-th">MEDIAN</th>
+                            <th class="lb-th">MAX</th>
+                            <th class="lb-th">MIN</th>
+                            <th class="lb-th">STD DEV</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-tbody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div id="app-wrapper">
         <!-- Izquierda: Juego -->
         <div id="game-container">
@@ -21,10 +80,8 @@
                 <span class="mode-header">SELECT MODE</span>
                 <div class="mode-row">
                     <button class="mode-btn active" data-mode="human">MANUAL</button>
-                    <button class="mode-btn mode-btn--locked" data-mode="battle" disabled>
-                        BATTLE
-                        <span class="mode-badge">SOON</span>
-                    </button>
+                    <button class="mode-btn" data-mode="battle">BATTLE</button>
+                    <button class="mode-btn" data-mode="vs">VS AI</button>
                 </div>
                 <div class="mode-divider"></div>
                 <div class="mode-row">
@@ -34,8 +91,15 @@
                 </div>
             </div>
             <div id="canvas-frame">
+                <!-- AI Action Indicators -->
+                <div id="ai-indicators" class="arcade-panel hidden" style="display: none; position: absolute; left: -95px; top: 20px; flex-direction: column; justify-content: center; gap: 8px; width: 85px; padding: 10px 8px; z-index: 10;">
+                    <span class="arcade-panel-title" style="margin-bottom: 2px; font-size: 8px;">ACTION</span>
+                    <div id="ind-jump" class="indicator-btn" style="padding: 6px 4px; font-size: 7px;">JUMP</div>
+                    <div id="ind-nojump" class="indicator-btn" style="padding: 6px 4px; font-size: 7px;">NO JUMP</div>
+                </div>
                 <canvas id="canvas" width="276" height="414"></canvas>
             </div>
+            <p id="battle-status" style="font-family:'Press Start 2P'; font-size:7px; color:#e8c870; text-align:center; margin-top:6px;"></p>
             <div id="speed-controls">
                 <span class="speed-label">Speed:</span>
                 <button class="speed-btn active" data-speed="1">1×</button>
@@ -43,7 +107,7 @@
                 <button class="speed-btn" data-speed="16">16×</button>
                 <button class="speed-btn" data-speed="75">75×</button>
                 <button class="speed-btn" data-speed="100">100×</button>
-                <button class="speed-btn" data-speed="1000">1000×</button>
+                <button class="speed-btn" data-speed="5000">5000×</button>
             </div>
         </div>
 
@@ -117,6 +181,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Battle Results Overlay -->
+    <div id="battle-results-overlay">
+        <div class="battle-results-panel">
+            <div class="lb-header">
+                <span class="lb-title">⚔️ BATTLE RESULTS</span>
+                <button id="battle-results-close" class="lb-close-btn">✕</button>
+            </div>
+            <div class="battle-results-body">
+                <div id="battle-podium"></div>
+                <button id="battle-replay-btn" class="mode-btn" style="margin-top:16px; padding:10px 24px; font-size:9px;">REMATCH</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="src/main.js"></script>
 </body>
 

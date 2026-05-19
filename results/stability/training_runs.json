@@ -1,0 +1,37 @@
+[
+  {
+    "mean": 46.5,
+    "max": 253,
+    "min": 1,
+    "stdDev": 42.41,
+    "median": 33
+  },
+  {
+    "mean": 37.31,
+    "max": 236,
+    "min": 1,
+    "stdDev": 38.75,
+    "median": 28
+  },
+  {
+    "mean": 64.53,
+    "max": 280,
+    "min": 2,
+    "stdDev": 59.37,
+    "median": 46.5
+  },
+  {
+    "mean": 62.91,
+    "max": 368,
+    "min": 1,
+    "stdDev": 62.79,
+    "median": 40
+  },
+  {
+    "mean": 45.92,
+    "max": 232,
+    "min": 1,
+    "stdDev": 45.09,
+    "median": 33
+  }
+]
