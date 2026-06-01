@@ -190,8 +190,10 @@ function startAIMode(agentType) {
 
     // Smooth moving average: Q-Learning is noisy (100 window), neural nets are smoother (50 window)
     telemetry = new Telemetry(agentType === 'qlearning' ? 100 : 50);
+    telemetry.currentEpsilon = agent.epsilon;
     dashboard = new Dashboard(telemetry);
     dashboard.show();
+    dashboard.update();
     document.getElementById('ai-indicators').style.display = 'flex';
 
     // 2. We use Game as a pure renderer for the AI
